@@ -1,0 +1,4072 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>独立显卡 通用调研 · DreamSoul 研发</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<a class="skip" href="#content">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>DreamSoul <span>研发 / 研究</span></a>
+    <nav aria-label="主要页面"><a href="index.html">概览与型号</a><a href="general.html" aria-current="page">通用调研</a><a href="r9700.html">R9700 专项</a></nav>
+  </div>
+</header>
+<main class="wrap report" id="content"><header class="report-title"><a class="back" href="index.html">← 概览与型号</a><h1>独立显卡 通用调研</h1></header><div class="report-layout"><aside><nav aria-label="章节"><strong>章节</strong><a class="level-2" href="#section-1">摘要</a><a class="level-1" href="#section-2">一、总览</a><a class="level-1" href="#section-3">二、型号与规格</a><a class="level-2" href="#section-4">规格对比要点</a><a class="level-2" href="#section-5">范围、方法和证据边界</a><a class="level-2" href="#section-6">规格来源</a><a class="level-2" href="#section-7">嵌入式与共享内存整机</a><a class="level-2" href="#section-8">官方目录中的历史条目</a><a class="level-1" href="#section-9">三、性能</a><a class="level-2" href="#section-10">如何比较硬件和跑分</a><a class="level-2" href="#section-12">消费桌面实机游戏</a><a class="level-2" href="#section-13">合成、DCC、视频与工程软件</a><a class="level-2" href="#section-14">AI 生图</a><a class="level-2" href="#section-15">本地 LLM、并发及数据中心训练</a><a class="level-2" href="#section-19">能效、噪声与通过线</a><a class="level-2" href="#section-20">软件、部署与整机约束</a><a class="level-1" href="#section-21">四、价格、供货与全生命周期成本</a><a class="level-2" href="#section-22">中国大陆</a><a class="level-2" href="#section-25">美国</a><a class="level-2" href="#section-28">全生命周期成本</a><a class="level-1" href="#section-29">五、场景选型与专项案例</a><a class="level-2" href="#section-30">场景选型</a><a class="level-2" href="#section-31">专项案例 盈通 R9700 工作站</a><a class="level-2" href="#section-35">DreamSoul 预装验收</a><a class="level-2" href="#section-39">局限与待补证据</a><a class="level-1" href="#section-40">附录 独立显卡综合总表</a></nav></aside><article class="prose"><p><span class="local-ref" title="工作区资料">调研大纲</span></p>
+<p><a id="report"></a></p>
+<h3 id="section-1">摘要</h3>
+<ul>
+<li>游戏、创作与本地 AI 的排序随负载变化。先按显存、目标软件和预算筛选，再查看 <a href="#gpu-table">综合总表</a> 中的同测成绩</li>
+<li>跨市场采购需核对具体料号、库存、税费、保修和整机成本。详见 <a href="#market">价格与成本</a></li>
+<li>盈通 R9700 的 32 GB 显存适合本地办公 Agent 和较重的生图工作流。工作站预装可按交付清单分别验收这些用途。详见 <a href="#scenarios">专项案例与验收</a></li>
+</ul>
+<h2 id="section-2">一、总览</h2>
+<ul>
+<li><strong>游戏和创作要分开看。</strong> RX 9070 XT 与 RTX 5070 Ti 在同组 1440p 测试中的光栅成绩分别为 116.5 和 116.8 FPS，光追则为 55.5 和 66.2 FPS。同期中国大陆采集样本分别为 5,299–6,199 元与 7,549–10,399 元。图形、渲染和本地 AI 各用对应测试判断。 <a href="#benchmarks">性能</a> · <a href="#china-market">中国大陆报价</a></li>
+<li><strong>同为 32 GB，整机要求差别很大。</strong> R9600D、RTX PRO 4500、R9700 和 RTX 5090 的参考功耗分别为 150、200、300 和 575 W。单卡容量相同后，再按软件后端、速度、散热和整机成本筛选。 <a href="#models">型号与规格</a> · <a href="#market">价格与成本</a></li>
+<li><strong>同样是 AI 应用，办公 Agent 和生图要分别测。</strong> R9700 可作为办公 Agent 的 Windows 预装样机，先测模型驻留，再测任务成功率和完成时间。预装包含生图时，另测出图时间、峰值显存和工作流兼容性。 <a href="#scenarios">专项案例与验收</a></li>
+</ul>
+<p><a id="models"></a></p>
+<h2 id="section-3">二、型号与规格</h2>
+<h3 id="section-4">规格对比要点</h3>
+<ul>
+<li><strong>消费级</strong> RTX 5060 Ti 与 RX 9060 XT 各有 8 GB 和 16 GB 版。RTX 5090 D 的 32 GB 初版与 24 GB v2 也应分开核对。容量会改变大模型或高分辨率素材是否需要卸载</li>
+<li><strong>专业工作站</strong> RTX PRO 4000 Blackwell 与 SFF 版均为 24 GB，但参考功耗分别为 145 W 和 70 W。容量更高的 RTX PRO 5000 有 48 GB 与 72 GB 两个版本</li>
+<li><strong>移动与服务器</strong> RTX 5090 Laptop 为 24 GB，桌面版为 32 GB。移动型号还要看整机的实际 TGP，服务器卡则要对照机箱、散热及互联</li>
+</ul>
+<p>逐型号规格、同测成绩和两地报价见文末 <a href="#gpu-table">综合总表</a>。</p>
+<h3 id="section-5">范围、方法和证据边界</h3>
+<p>调研主键为厂商正式型号与影响部署的版本。地区版、显存、散热形态、嵌入式和工作站/服务器差异可独立成项。各 AIB 的 OC、颜色和整机搭配作为渠道商品记录。举例，5060 Ti 的 8／16 GB、5090 D 的初版／v2、PRO 5000 的 48／72 GB 分行。渠道改显存卡按非参考规格识别。</p>
+<p>在 Codex 内置浏览器读 AMD Radeon、AMD Radeon PRO、AMD Instinct、NVIDIA GeForce、NVIDIA RTX PRO、NVIDIA 数据中心等目录，再看公开零售、聚合追踪和测试方原始结果。AMD 官网消费／专业／加速器目录分别显示 204、82、18 个字段筛选条目，其中包括历史产品和配件。逐型号总表覆盖 273 条消费、专业、移动与数据中心规格行，另外列出嵌入式、统一内存与历史目录补录。NVIDIA 不同线使用各自产品页和驱动清单，漏列了尚无可追溯来源的 OEM 内部料号。官网显示或驱动识别仅证明产品或版本可识别，中国大陆在售判断必须跟渠道证据配套。 <a href="https://www.amd.com/en/products/specifications/graphics.html">AMD Radeon 总表</a> · <a href="https://www.amd.com/en/products/specifications/professional-graphics.html">AMD PRO 总表</a> · <a href="https://www.nvidia.com/en-gb/geforce/graphics-cards/compare/">NVIDIA GeForce 对比</a> · <a href="https://www.nvidia.com/en-us/drivers/details/280473/">NVIDIA 数据中心驱动产品</a></p>
+<p>型号目录与市场价格主要采用截至 2026年11月19日的公开快照。价格保留商品、优惠、税务、库存、成色和来源时间，无法实地确认就保留空缺。跑分优先同题目同口径，二次引用保留原作者条件。CUDA、ROCm、Vulkan、图形驱动、操作系统和框架版本单独核对。无同协议实测的型号保留缺证。</p>
+<p>按文末总表统计，273 条型号与版本中，43 条填有至少一项性能数据。中国大陆和美国分别有 32 条和 15 条填入数值报价，两地都有数值报价的为 15 条。报价计入历史价和渠道快照，成交条件见价格章节。</p>
+<p>移动 GPU 要按整机功耗与散热选型。统一内存同时供 CPU 与 GPU 使用，服务器另看互联、冷却和持续吞吐。</p>
+<h3 id="section-6">规格来源</h3>
+<p><a href="https://www.amd.com/en/products/specifications/graphics.html">AMD Radeon 官方规格</a> · <a href="https://www.amd.com/zh-cn/products/specifications/graphics.html">AMD 中国规格含 7650 GRE</a> · <a href="https://www.amd.com/zh-cn/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-6000-series/amd-radeon-rx-6750-gre-12gb.html">6750 GRE 12 GB</a> · <a href="https://www.amd.com/zh-cn/support/downloads/drivers.html/graphics/radeon-rx/radeon-rx-6000-series/amd-radeon-rx-6750-gre-10gb.html">6750 GRE 10 GB</a> · <a href="https://www.amd.com/en/partner/about-partners/graphics-card-specifications.html">AMD 板卡伙伴规格</a>。</p>
+<p><a href="https://www.nvidia.com/en-gb/geforce/graphics-cards/compare/">NVIDIA GeForce 官方比较</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/40-series/rtx-4090-d/">中国 4090 D</a> · <a href="https://www.nvidia.cn/geforce/news/rtx-5090-5080-out-now/">中国 5090 D 首发</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/50-series/rtx-5090-d-v2/">中国 5090 D v2</a>。地区版及非公以具体货号为准。</p>
+<p><a href="https://www.amd.com/en/products/specifications/professional-graphics.html">AMD 专业图形规格</a>。容量为产品页列值。R9700 官方 ECC 限 Linux。</p>
+<p><a href="https://www.nvidia.com/en-in/products/workstations/professional-desktop-gpus/">RTX PRO 桌面规格</a> · <a href="https://www.pny.com/rtx-2000e-ada-generation">PNY RTX 2000E 规格</a>。只在具体资料支持时判定 ECC。</p>
+<p><a href="https://www.nvidia.com/en-us/geforce/laptops/compare/">GeForce 移动比较</a> · <a href="https://www.nvidia.com/en-us/products/workstations/professional-laptops/compare/">移动工作站比较</a>。2026年11月目录在 5070 列同时显示 8／12 GB，实际机型、TGP、Dynamic Boost 与双烤表现以 OEM 为准。</p>
+<p><a href="https://www.amd.com/en/products/specifications/accelerators.html">AMD Accelerator Specifications</a>。目录的 18 项全部列入。HBM4 平台有发布规格，大陆交付需单独核对。</p>
+<p><a href="https://www.nvidia.com/en-us/data-center/products/">NVIDIA 数据中心目录</a> · <a href="https://developer.nvidia.com/blog/inside-nvidia-rubin-gpu-architecture-powering-the-era-of-agentic-ai/">Rubin 架构</a> · <a href="https://docs.nvidia.com/vgpu/sizing/virtual-workstation/latest/gpus-vws.html">vWS 规格</a> · <a href="https://www.nvidia.com/en-us/drivers/details/280473/">数据中心驱动支持产品</a> · <a href="https://images.nvidia.com/data-center/technical-brief-gpu-positioning-virtualized-compute-and-graphics-workloads.pdf">NVIDIA 虚拟化规格</a>。驱动列名代表兼容证据。</p>
+<h3 id="section-7">嵌入式与共享内存整机</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>厂商与型号</strong></th>
+<th><strong>形态</strong></th>
+<th><strong>内存和兼容判断</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVIDIA RTX PRO 5000 Blackwell Embedded</td>
+<td>MXM／PCIe 由合作商确定</td>
+<td>24 GB GDDR7</td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 4000 Blackwell Embedded</td>
+<td>同上</td>
+<td>16 GB GDDR7</td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 2000 Blackwell Embedded</td>
+<td>同上</td>
+<td>8 GB GDDR7</td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 500 Blackwell Embedded</td>
+<td>同上</td>
+<td>6 GB GDDR7</td>
+</tr>
+<tr>
+<td>NVIDIA RTX A4500 Embedded</td>
+<td>模块</td>
+<td>20 GB 档及型号以整机核定</td>
+</tr>
+<tr>
+<td>NVIDIA RTX A2000 Embedded</td>
+<td>模块</td>
+<td>独立核对容量与热设计</td>
+</tr>
+<tr>
+<td>NVIDIA RTX A1000 Embedded</td>
+<td>模块</td>
+<td>独立核对容量与热设计</td>
+</tr>
+<tr>
+<td>NVIDIA RTX A500 Embedded</td>
+<td>模块</td>
+<td>独立核对容量与热设计</td>
+</tr>
+<tr>
+<td>NVIDIA Jetson AGX Thor T5000／T4000</td>
+<td>系统模组，各容量版本</td>
+<td>按厂商模组和 JetPack 版本核对，不套桌面 CUDA 安装包</td>
+</tr>
+<tr>
+<td>NVIDIA Jetson AGX Orin／Orin NX／Orin Nano</td>
+<td>系统模组，各容量版本</td>
+<td>按 JetPack 与具体载板复核</td>
+</tr>
+<tr>
+<td>NVIDIA GB10 DGX Spark</td>
+<td>Arm64 整机，128 GB 统一内存</td>
+<td>OEM 对照有 ASUS Ascent GX10、Dell Pro Max GB10、HP ZGX Nano、Lenovo ThinkStation PGX、MSI EdgeXpert、Gigabyte AI TOP ATOM</td>
+</tr>
+<tr>
+<td>AMD Ryzen AI Max+ 395／Max 390／Max 385</td>
+<td>x86 APU，Radeon 8060S／8050S 系</td>
+<td>共享内存依整机规格。Halo 属 Max+ 395 平台，运行时上的 GPU 可用量依配置</td>
+</tr>
+<tr>
+<td>AMD Ryzen AI Max+ 392／388</td>
+<td>x86 APU，依实际平台</td>
+<td>独立看可购整机、共享内存及软件矩阵</td>
+</tr>
+<tr>
+<td>AMD Ryzen Embedded V3000、8000 系及 Radeon 嵌入式方案</td>
+<td>按 CPU／处理器平台或 OEM 模组</td>
+<td>整机询价。V3000 具体型号为计算型平台，不为其默认推定独立 Radeon GPU</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://www.nvidia.com/en-us/products/workstations/rtx-embedded/">NVIDIA Embedded</a> · <a href="https://developer.nvidia.com/embedded/jetson-modules">NVIDIA Jetson 模组</a> · <a href="https://docs.nvidia.com/dgx/dgx-spark/system-overview.html">DGX Spark 用户指南</a> · <a href="https://www.amd.com/en/blogs/2026/amd-ryzen-ai-halo-is-designed-for-the-agentic-era.html">AMD Ryzen AI Halo</a> · <a href="https://www.amd.com/en/products/embedded.html">AMD 嵌入式</a></p>
+<h3 id="section-8">官方目录中的历史条目</h3>
+<p>保留历史对象供识别二手和在用设备。采购级逐项核验优先覆盖当前、前代和本轮发现有可见渠道的型号。历史附录仅登记名称。产品目录本身未覆盖所有历史 OEM 板号和区域变体，因此历史附录按可追溯目录范围阅读。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>目录</strong></th>
+<th><strong>型号</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD Radeon 已列其余历史目录</td>
+<td>HD 6450、HD 6570、HD 6670、HD 6750、HD 6770、HD 6850、HD 6870、HD 6950、HD 6970、HD 7730、HD 7750、HD 7770 GHz Edition、HD 7790、HD 7850、HD 7870 GHz Edition、HD 7950、HD 7970、HD 7970 GHz Edition、HD 7990、HD 8570M、HD 8590M、HD 8670M、HD 8690M、HD 8730M、HD 8750M、HD 8770M、HD 8790M、HD 8830M、HD 8850M、HD 8870M、HD 8970M、R5 230、R5 235、R5 M230、R5 M240、R5 M240X、R5 M255、R5 M255X、R5 M315、R5 M320、R5 M330、R5 M335、R5 M335X、R7 240、R7 250、R7 250X、R7 260、R7 260X、R7 265、R7 360、R7 370、R7 M260、R7 M260X、R7 M265、R7 M265AE、R7 M265X、R7 M270、R7 M340、R7 M350、R7 M360、R7 M365、R7 M365X、R7 M370、R7 M375、R7 M380、R9 270、R9 270X、R9 280、R9 280X、R9 285、R9 290、R9 290X、R9 295X2、R9 380、R9 380X、R9 390、R9 390X、R9 Fury、R9 Fury X、R9 M265X、R9 M270X、R9 M275X、R9 M280、R9 M280X、R9 M285X、R9 M290X、R9 M295X、R9 M360、R9 M365X、R9 M375、R9 M375X、R9 M380、R9 M385、R9 M385X、R9 M390、R9 M390X、R9 M395、R9 M395X、R9 Nano、RX 480、HD 5450、HD 5570、HD 5670、HD 5750、HD 5770、HD 5830、HD 5850、HD 5870、HD 5970、520、530、535、540、540X、550X、610、620、625、630、RX 460、RX 470、RX 540、RX 540X、RX 550、RX 550X、RX 560、RX 560 (OEM)、RX 560X、RX 570、RX 570 (OEM)、RX 570X、RX 580、RX 580 (OEM)、RX 580X、RX 590、RX 640、RX Vega 56、RX Vega 64、RX Vega 64 Liquid Cooled、VII</td>
+</tr>
+<tr>
+<td>AMD FirePro 历史专业条目</td>
+<td>R5000、S10000、S10000 (Active Cooling)、S10000 12GB Edition、S400 Synchronization Module、S4000X、S7000、S7100X、S7150 (Active Cooling)、S7150 (Passive Cooling)、S7150 X2、S9000、S9050、S9100、S9150、S9170、S9300 X2、W2100、W4100、W4170M、W4190M、W4300、W5000、W5000 DVI、W5130M、W5170M、W600、W6150M、W7000、W7170M、W8000、W9000、W9100、W9100 32GB、W8100、W7100、W5100</td>
+</tr>
+<tr>
+<td>NVIDIA 历史 GeForce／Quadro 专业桌面</td>
+<td>GTX 1080 Ti、GTX 1080、GTX 1070 Ti、GTX 1070、GTX 1060 6GB、GTX 1060 3GB、GTX 1050 Ti、GTX 1050、GTX 1050 3GB、GT 1030 GDDR5、GT 1030 DDR4、GT 1010、Titan Xp、TITAN RTX、Quadro RTX 8000、Quadro RTX 6000、Quadro RTX 5000、Quadro RTX 4000、Quadro P6000、Quadro P5000、Quadro P4000、Quadro P2200、Quadro P2000、Quadro P1000、Quadro P620、Quadro P600、Quadro P400</td>
+</tr>
+<tr>
+<td>NVIDIA 历史消费／专业移动补录</td>
+<td>RTX 3080 Ti、RTX 3080、RTX 3070 Ti、RTX 3070、RTX 3060、RTX 3050 Ti、RTX 3050 4GB、RTX 3050 6GB、RTX 2050、RTX 2080 SUPER、RTX 2080、RTX 2070 SUPER、RTX 2070、RTX 2060、GTX 1660 Ti、GTX 1650 Ti、GTX 1650、MX570、MX550、MX450、MX350、MX330、MX250、MX230、MX150、MX130、MX110、RTX A5500、RTX A5000、RTX A4500、RTX A4000、RTX A3000、RTX A2000、RTX A1000、RTX A500</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://www.amd.com/en/products/specifications/graphics.html">AMD Radeon 目录</a> · <a href="https://www.amd.com/en/products/specifications/professional-graphics.html">AMD 专业目录</a> · <a href="https://www.nvidia.com/en-us/geforce/products/">NVIDIA GTX 10</a> · <a href="https://nvidianews.nvidia.com/news/nvidia-transforms-mainstream-laptops-into-gaming-powerhouses-with-geforce-rtx-30-series">NVIDIA RTX 30 移动</a> · <a href="https://www.nvidia.com/Download/index.aspx">NVIDIA 驱动产品目录</a></p>
+<p>市场证据见 <a href="#china-market">中国大陆价格与供货</a>。跑分见 <a href="#benchmarks">跨型号跑分与工作负载</a>。在卖家只给整机总价、货源未核或跑分缺同协议条件时，个别字段保留空缺。</p>
+<p><a id="benchmarks"></a></p>
+<h2 id="section-9">三、性能</h2>
+<h3 id="section-10">如何比较硬件和跑分</h3>
+<h4 id="section-11">（一）容量、带宽和计算</h4>
+<p>显存的第一道门槛是能装下模型权重、KV cache、激活、工作空间和程序运行开销。理想 4-bit 权重按每参数 0.5 字节，8B／32B／70B 分别约 4／16／35 GB，BF16 理想权重约 16／64／140 GB。使用实际文件及加载后总峰值判断。混合专家模型的总参数决定全驻留规模，激活参数影响每 token 计算。长上下文和并发推高 KV，使用同时运行的嵌入、ASR、TTS 和图形程序也会占显存。</p>
+<p>带宽更影响单流生成中的权重访问，计算和软件通常更影响大批量、预填充、扩散图像、训练和复杂混合专家调用。R9700 为 640 GB/s，RX 7900 XTX 为 960 GB/s，5090 约 1,792 GB/s。以上是理论带宽。不同格式、算子融合、缓存、互联和软件路径会改变实际输出。厂商 TOPS 要先对齐 FP／INT、位宽、有效稀疏比例和向量／矩阵计法。 <a href="https://www.amd.com/en/products/specifications/graphics.html">AMD Radeon 规格</a> · <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">R9700 规格</a> · <a href="https://www.nvidia.com/en-gb/geforce/graphics-cards/compare/">GeForce 规格</a></p>
+<h3 id="section-12">消费桌面实机游戏</h3>
+<p>Tom's Hardware 2026 同轮横评使用 Ryzen 7 9800X3D。以下为 1440p Ultra，两个列分别来自光栅与光追游戏集。光栅列是 11 款游戏的几何均值，光追另有测试集。对比按同列计算，不能把两列差值解释成同一游戏开启光追的损失。不同型号的原表若合并后缀，以下也沿用原有粒度。DLSS／FSR 画质、帧生成后的帧时和响应时间需要额外对照。 <a href="https://www.tomshardware.com/reviews/gpu-hierarchy%2C4388.html">原始横评、测试条件和 1080p／4K 数据</a></p>
+<p>数值见 <a href="#gpu-table">独立显卡综合总表</a>的对应列。原表未细分到具体变体的结果为 RTX 3080 82.0／34.7 FPS、RTX 4070 77.8／38.6 FPS、RTX 3060 Ti 51.0／22.3 FPS、RTX 3050 29.8／12.6 FPS。</p>
+<p>同组实例。RX 9070 XT 与 RTX 5070 Ti 的 1440p 光栅近似，后者在同组光追快约 19%。RTX 5060 Ti 的 8 GB 与 16 GB 版 1440p 光栅差距约 7%，光追约 46%，对显存更紧的条件差距变大。该差距依测试场景，不把 8 GB 和 16 GB 混作同款。以上为由原表计算的相对差异。 <a href="https://www.tomshardware.com/reviews/gpu-hierarchy%2C4388.html">原始游戏成绩</a></p>
+<h3 id="section-13">合成、DCC、视频与工程软件</h3>
+<p>UL 公开提交样本的同项目中位数，2026年11月19日访问。平台、驱动、散热和超频可能不同。该分数反映 DX12 栅格图形类基准，适合建立显卡图形档位。整机若需要游戏和图形工作，还应单测目标游戏或 CAD 视口。 <a href="https://benchmarks.ul.com/hardware/gpu/AMD%20Radeon%20AI%20PRO%20R9700%2Breview">UL R9700 与对照 GPU</a> · <a href="https://benchmarks.ul.com/3dmark">UL 3DMark</a></p>
+<p>Puget 于 2026年6月10日发布此组数据，使用 32 核 Threadripper 和默认 GPU 设置，AMD 走 HIP，NVIDIA 在可用时走 RTX 或 OptiX。R9700 与 RX 9070 XT 的 Blender 分数接近，5070 Ti 约为 R9700 的 2.12 倍，Redshift 同项目耗时为 89 秒对 207 秒。AMD 的 V-Ray Standalone 在该组测试发生崩溃，完成数据取自 3ds Max 集成路径。若目标场景超出 16 GB，复测真实场景的显存、加载和回退开销。 <a href="https://www.pugetsystems.com/labs/articles/amd-gpu-rendering-performance-is-radeon-a-viable-alternative/">Puget 渲染实测</a></p>
+<p><strong>视频工作流。</strong> 在 Puget 当时的 Premiere Long GOP 子项，RX 9070 XT 领先 50 系列约 25%。DaVinci Resolve 总分中 RX 7900 XTX 接近 RTX 4080 SUPER，RX 9070 XT 比 7900 XTX 低约 14% 剪辑、RAW、Fusion、GPU Effects、Magic Mask 是不同测项。新版基准和应用版本会改排序，确认目标色深、色度采样、解码与导出格式 <a href="https://www.pugetsystems.com/labs/articles/2025-consumer-gpu-content-creation-roundup/">Puget 创作横评</a> · <a href="https://www.pugetsystems.com/labs/articles/puget-bench-for-premiere-pro-and-davinci-resolve-2-0-analysis/">视频基准 2.0 方法更新</a></p>
+<p><strong>专业视口样本。</strong> AMD Performance Labs 以 Threadripper PRO 5975WX、Windows 11、1080p、8 个视图集测 SPECviewperf 2020 v3.1。以 RTX A6000 的几何均值为 100，W7900 报告 139，6000 Ada 为 150。属于厂商同组试验。早期视图集或驱动不得用来推断当前 SPECviewperf 15 或应用单项。15 的公开提交需筛同分辨率、版本与视图集。<a href="https://www.amd.com/content/dam/amd/en/documents/products/graphics/workstation/radeon-pro-w7900-datasheet.pdf">AMD W7900 数据表</a> · <a href="https://spec.org/gwpg/gpc.data/viewperf15/summary.html">SPECviewperf 15 原始结果</a></p>
+<p><strong>移动平台样本。</strong> Notebookcheck 的 Fire Strike Graphics 汇总显示，RTX 5090 Laptop 51,545（31 个样本），RTX 5080 Laptop 47,592（20），RTX 5070 Ti Laptop 43,581（19），RX 7900M 50,241（表中未显示汇总样本数）。该表不是同机身或同功耗台架，适合判断同一子项目的量级。实际采购以具体笔记本 TGP、散热、显示路径和原生应用跑分为准。<a href="https://www.notebookcheck.net/Mobile-Graphics-Cards-Benchmark-List.844.0.html?3dmark13_fire_gpu=1&amp;archive=1">Notebookcheck 移动图形结果</a></p>
+<h3 id="section-14">AI 生图</h3>
+<p>StorageReview 原测，UL Procyon 相同题目、分型号运行。综合分越高越好，单图用时越低越好。SD1.5 INT8 与 SDXL FP16 有不同精度、模型和运行路径。空白为原文无结果，不能做零分处理。</p>
+<p>数值见 <a href="#gpu-table">独立显卡综合总表</a>的对应列。</p>
+<p>5060 Ti 与 9070 在 SDXL 单图用时接近，9070 XT 在 SD1.5 FP16 缩短用时。应用若用 Flux、ControlNet、LoRA 或视频生成，另固定提交版本、模型、种子、尺寸、步数和自定义节点。旧 Stable Diffusion 测试可做代际背景，不能直接作为当前 ComfyUI 或高精度图片结果。 <a href="https://www.storagereview.com/review/amd-radeon-rx-9070-gre-review-12gb-rdna-4-for-1440p-gaming">StorageReview 实测</a> · <a href="https://www.pugetsystems.com/labs/articles/stable-diffusion-performance-professional-gpus/">Puget 专业卡早期生图横评</a></p>
+<h3 id="section-15">本地 LLM、并发及数据中心训练</h3>
+<h4 id="section-16">文本推理与后端对照</h4>
+<p>llama.cpp 社区测试采用 2026年2月同一份早期 Qwen3.5-35B-A3B MoE UD-Q4_K_XL GGUF、commit 244641955、权重全 GPU、Flash Attention 开、q8_0 KV。CUDA 与 Vulkan 的主机和后端各异。Unsloth 后续修订了同名配方。 <a href="https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF/discussions/5">Unsloth 修订记录</a></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>指标</strong></th>
+<th style="text-align:right"><strong>R9700 Vulkan</strong></th>
+<th style="text-align:right"><strong>RTX 5090 CUDA</strong></th>
+<th style="text-align:right"><strong>5090 / R9700</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP，512 token 输入</td>
+<td style="text-align:right">2,713</td>
+<td style="text-align:right">7,026</td>
+<td style="text-align:right">2.59×</td>
+</tr>
+<tr>
+<td>PP，8,192 token 输入</td>
+<td style="text-align:right">2,413</td>
+<td style="text-align:right">6,835</td>
+<td style="text-align:right">2.83×</td>
+</tr>
+<tr>
+<td>PP，32,768 token 输入</td>
+<td style="text-align:right">1,877</td>
+<td style="text-align:right">6,461</td>
+<td style="text-align:right">3.44×</td>
+</tr>
+<tr>
+<td>TG，原文平均</td>
+<td style="text-align:right">127.4</td>
+<td style="text-align:right">194.0</td>
+<td style="text-align:right">1.52×</td>
+</tr>
+</tbody>
+</table></div>
+<p>单位均为 token/s，适用于当时的权重、后端、commit 和参数。单人对话常在意生成速度，长文档/RAG 更在意预填充和首 token。35B MoE 与 32B Dense、Q4 与 BF16 各需实测。Qwen3.5-35B-A3B 原版检查点权重约 67.0 GiB，另需 KV 缓存和运行空间。 <a href="https://github.com/ggml-org/llama.cpp/discussions/19890">社区测试原始输出</a> · <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/model.safetensors.index.json">Qwen 原版权重索引</a></p>
+<p>同一 R9700 的另一个社区样本使用 Ryzen 9 9950X3D、Fedora 44、llama.cpp 8ea2902、Llama 2 7B Q4_0、Flash Attention 开。ROCm 的 512 token 预填充约 5,040 token/s、128 token 生成约 121.6 token/s。Vulkan 分别约 5,411 和 131.2。说明同一显卡的最佳后端要按模型和版本验证。ROCm 样本使用 TheRock 预发版，不能用来承诺稳定版镜像。 <a href="https://github.com/ggml-org/llama.cpp/discussions/15021">社区 HIP 与 Vulkan 同卡对照</a></p>
+<h4 id="section-17">并发、双卡与功耗</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>Puget 负载</strong></th>
+<th><strong>配置</strong></th>
+<th style="text-align:right"><strong>并发 1</strong></th>
+<th style="text-align:right"><strong>并发 8</strong></th>
+<th><strong>GPU 功耗</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Llama 3.1 8B FP16</td>
+<td>1×R9700、vLLM</td>
+<td style="text-align:right">29.1 token/s，首 token 113 ms</td>
+<td style="text-align:right">153 token/s，首 token 405 ms</td>
+<td>按原文分项，当前表不推算墙上功耗</td>
+</tr>
+<tr>
+<td>Qwen3.6-27B FP8</td>
+<td>2×R9700、vLLM ROCm v0.20.2、TP=2</td>
+<td style="text-align:right">15.88 token/s</td>
+<td style="text-align:right">156.21 token/s</td>
+<td>两卡合计 310／480 W</td>
+</tr>
+<tr>
+<td>Qwen3.6-27B FP8＋MTP</td>
+<td>2×R9700、调优 vLLM</td>
+<td style="text-align:right">62.75 token/s</td>
+<td style="text-align:right">320.23 token/s</td>
+<td>两卡合计 315／490 W</td>
+</tr>
+<tr>
+<td>Qwen3.6-27B Q4_K_M</td>
+<td>2×R9700、llama.cpp 层切分</td>
+<td style="text-align:right">23.40 token/s</td>
+<td style="text-align:right">56.00 token/s</td>
+<td>两卡合计 339／353 W</td>
+</tr>
+</tbody>
+</table></div>
+<p>单卡行 500 输入／500 输出，双卡行 500 输入／200 输出，裸机。并发 8 为总吞吐。量化和 MTP 路线改变配置。Puget 更正过部分旧结果，本表使用当前更正版本。该实测支持双 R9700 路线的可行性。文章列出的 5090 吞吐范围缺同条件实测字段，未取作倍数。部分 llama.cpp 逐行切分组合在高并发下存在失败记录，正式预装须按目标模型验证。 <a href="https://www.pugetsystems.com/labs/articles/AMD-Radeon-AI-PRO-R9700-Dual-GPU-AI-Inference-Performance/">Puget 双卡与更正说明</a></p>
+<h4 id="section-18">数据中心训练与推理</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>层次</strong></th>
+<th><strong>实测观察</strong></th>
+<th><strong>如何应用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MLPerf Training v6.1 闭合组 GPT-OSS-20B</td>
+<td>AMD 汇引的 32 GPU 结果中，Crusoe MI355X 6.1-0006 用时约 27.16 分钟，佛罗里达大学 B200 6.1-0149 约 37.95 分钟</td>
+<td>同任务与加速器数，云与自建主机、网络及框架不同。公共 ID 可能对应多模型行，查询须同时选 <strong>GPT-OSS-20B</strong>。这一对提交是系统比较</td>
+</tr>
+<tr>
+<td>MLPerf Inference v6.1</td>
+<td>可比过滤维度包括模型、准确率目标、闭合或开放组、Offline／Server／Interactive、卡数、单机或多节点、是否提交功率</td>
+<td>本轮确认 MI350P、Ryzen AI Max+ 395 和 Rubin 有提交，其中 Rubin 在该轮发布被列为预览。客户端、服务和机柜各比较各自结果</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://github.com/ggml-org/llama.cpp/discussions/19890">llama.cpp 原始对照</a> · <a href="https://www.pugetsystems.com/labs/articles/AMD-Radeon-AI-PRO-R9700-Dual-GPU-AI-Inference-Performance/">Puget 并发和功耗</a> · <a href="https://results.mlcommons.org/training">MLPerf Training 数据库</a> · <a href="https://www.amd.com/en/blogs/2026/amd-advances-ai-training-across-more-workloads-in-mlperf-training.html">AMD 提交对照说明</a> · <a href="https://mlcommons.org/2026/09/mlperf-inference-v6-1-results/">MLCommons Inference v6.1</a></p>
+<p>量化的速度结果必须和质量一同保存。独立记录权重制品能否加载、上下文、PPL／准确率、峰值显存、校准时长和稳定性。全量训练、LoRA、QLoRA 和软件卸载的上下文与显存压力不同。当前没有横跨所有消费与专业卡的同协议训练数据，产品表留缺证。</p>
+<h3 id="section-19">能效、噪声与通过线</h3>
+<ul>
+<li><strong>游戏功耗</strong>，Tom's Hardware 的 PCAT v2 试验测的是板卡侧。该组 9070 相对 5070 在 1440p／4K 负载耗用更少板卡功率，1080p 接近。用对应卡同轮 FPS 和实测功率计算 FPS/W，与光追或瞬时峰值分开。副厂散热、限功与游戏影响温升。<a href="https://www.tomshardware.com/pc-components/gpus/amd-radeon-rx-9070-xt-review/8">原始功耗测试</a></li>
+<li><strong>AI 能耗</strong>，Puget 的双 R9700 标准 vLLM Qwen3.6 并发 8 样本约 480 W 板卡合计。按其计算示例含约 300 W 主机负载，156.2 token/s 折约 1.39 kWh/百万输出 token。此值依线程、负载、吞吐及系统功率假设。对比另一架构要以同模型质量和同 SLA 的墙上功率重测。<a href="https://www.pugetsystems.com/labs/articles/AMD-Radeon-AI-PRO-R9700-Dual-GPU-AI-Inference-Performance/">Puget 双卡原文</a></li>
+<li><strong>噪声</strong>，没有同一机箱和距离下覆盖全型号的可用数据。涡轮、轴流、被动需要不同风道。验收同时记录环境背景噪声、机箱封闭状态、温度、时钟和持续负载后的重试或降频</li>
+</ul>
+<p>DreamSoul 预装的具体用例仍见 <a href="#validation">跑分与验收</a>。横评表的型号空缺表示未找到相同测试协议，尤其是移动、OEM、历史卡和专业大显存版。上市表中的理论峰值仅用于解释可能瓶颈。</p>
+<h3 id="section-20">软件、部署与整机约束</h3>
+<p><strong>CUDA 与 ROCm 的主要区别落到部署链。</strong> CUDA 硬件仍要核对驱动、PyTorch wheel、编译工具链、架构和目标自定义算子。ROCm 需要按精确 GPU、OS、版本、PyTorch 和目标内核查兼容表。PyTorch ROCm 中很多接口沿用 torch.cuda 命名，需用运行时构建信息和实际调用确认后端。Vulkan 可以覆盖部分跨厂商 GGUF 路径，载入相同模型仍应测试模型导入、卸载层数、Flash Attention、量化与回落。DirectML、ONNX Runtime 和上游项目支持声明也各有范围。 <a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/">AMD Radeon ROCm</a> · <a href="https://docs.nvidia.com/cuda/wsl-user-guide/index.html">NVIDIA CUDA on WSL</a> · <a href="https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md">llama.cpp 构建文档</a> · <a href="https://docs.vllm.ai/en/v0.32.0/features/quantization/">vLLM 量化文档</a></p>
+<p><strong>三个 OS 路径单独验。</strong> Windows 原生适于桌面预装和媒体程序。WSL2 需 OS 和驱动共同支持，文件系统位置、网络、显存管理和多卡诊断都可能影响体验。原生 Linux 更利于部署、容器、RCCL／NCCL、性能剖析和持久运行。核对显示连接、重启、休眠恢复、设备枚举、断网或更新。相同代码在一台测试机成功只能形成该镜像的证据。 <a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/wsl/wsl_compatibility.html">ROCm WSL 矩阵</a> · <a href="https://docs.nvidia.com/cuda/wsl-user-guide/index.html">CUDA on WSL</a></p>
+<p><strong>多卡有三种需求。</strong> 各卡跑独立任务时每卡需要容纳自己的模型。层／张量并行需要验证 PCIe P2P／RCCL／NCCL、驱动、拓扑、每卡分配与通信。多个用户的总吞吐、单用户解码和 P95 延迟须分别看。产品若含 NVLink、MIG、SR-IOV 或 vGPU，需核对实际 SKU、软件版本、许可和支持合同。双 300 W 卡的功率预算从 600 W 板卡合计开始，再算 CPU、风扇、存储、长载和供电峰值。 <a href="https://docs.vllm.ai/en/latest/serving/parallelism_scaling/">vLLM 并行说明</a> · <a href="https://docs.nvidia.com/vgpu/sizing/virtual-workstation/latest/gpus-vws.html">NVIDIA vWS 支持</a></p>
+<p><strong>同一 GPU 芯片在不同卡和整机里的可用性不同。</strong> 机箱要核对卡长、相邻槽、侧板、接头弯曲余量、前部进气和电源料号。被动型要靠系统风道。桌面常受消费主板通道分配限制。DreamSoul 已下单的技嘉配置为 RTX 5070 12 GB、850 W、X870 EAGLE WIFI7，主板两副长槽实际为 PCIe 3.0 x1，宜按单卡规划。笔记本 RTX 5060 8 GB 可保留为软件最低档验证；办公室 GPU 节点型号与到货配置待核。 <span class="local-ref" title="工作区资料">办公电脑</span> · <span class="local-ref" title="工作区资料">办公室验证方案</span> · <a href="https://www.gigabyte.com/Motherboard/X870-EAGLE-WIFI7-rev-1x/sp">技嘉主板规格</a></p>
+<p><a id="market"></a></p>
+<h2 id="section-21">四、价格、供货与全生命周期成本</h2>
+<p><a id="china-market"></a></p>
+<h3 id="section-22">中国大陆</h3>
+<p>查询日 2026年11月19日，北京时间。价格为人民币。本表以能识别整机或料号的样本做横比。京东商品页看到价格和购买入口仍需到对应地址复核库存。比价聚合的最低、优惠价、历史低点、批发含税均价以及公司采购单是不同口径。</p>
+<h4 id="section-23">消费级单卡</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>型号</strong></th>
+<th><strong>价格样本</strong></th>
+<th><strong>时间与凭据</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td>RX 6500 XT 4 GB</td>
+<td>1,249，盈通大地之神</td>
+<td>11月18日，京东券后跟踪。<a href="https://compare.fenxianglife.com/p/b70d5986e-amd-radeon-rx-6500-xt-4g-d6-qm7xqricl4.html">商品跟踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 6750 GRE 10 GB／12 GB</td>
+<td>2,599，磐镭 10 GB；3,299，讯景 12 GB</td>
+<td>11月18日京东跟踪。型号和容量不同。<a href="https://compare.fenxianglife.com/rank/xianka-shidi.html">磐镭样本</a> · <a href="https://compare.fenxianglife.com/b/xunjing-xianka.html">讯景样本</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 7650 GRE 8 GB</td>
+<td>1,999，蓝宝石合金脉动</td>
+<td>11月18日跟踪快照，补入官方全球表未显示的地区型号。<a href="https://compare.fenxianglife.com/p/sapphire-amd-radeon-rx-7650-gre-8g-afkvkkqynn.html">商品跟踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 9060 XT 8 GB</td>
+<td>2,499，瀚铠白色合金</td>
+<td>11月18日跟踪快照。<a href="https://compare.fenxianglife.com/p/bac21f5a8-amd-radeon-rx-9060-xt-8gb-oc-5tc5so3lqj.html">商品跟踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 9060 XT 16 GB</td>
+<td>2,988，撼讯游荡者 V2；3,999，瀚铠黑色合金 V2</td>
+<td>11月18日京东跟踪，同显存不同非公。<a href="https://compare.fenxianglife.com/p/b778b700e-amd-radeon-rx-9060xt-v2-16g-32bjd3cpik.html">撼讯样本</a> · <a href="https://compare.fenxianglife.com/p/bac21f5a8-amd-radeon-rx-9060-xt-16gb-oc-v2-77qbk5sv6m.html">瀚铠样本</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 9070 GRE 12 GB</td>
+<td>3,679，讯景黑狼；4,099，撼讯暗黑犬；4,899，蓝宝石脉动</td>
+<td>11月18日跟踪。<a href="https://compare.fenxianglife.com/b/xunjing-xianka.html">讯景样本</a> · <a href="https://compare.fenxianglife.com/p/b778b700e-amd-radeon-rx-9070-gre-12gb-ux66pp4h7n.html">撼讯样本</a> · <a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">蓝宝石样本</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 9070 16 GB</td>
+<td>5,699，华硕 PRIME；6,999，蓝宝石极地</td>
+<td>11月18日跟踪，后者样本稀少。<a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">按价位追踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 9070 XT 16 GB</td>
+<td>5,299，撼讯暗黑犬 OC；5,499，蓝宝石合金；6,199，讯景凤凰涅槃</td>
+<td>11月18日跟踪。部分页面数据延用此前采集的商品报价。<a href="https://compare.fenxianglife.com/b/hanxun-xianka.html">撼讯</a> · <a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">蓝宝石</a> · <a href="https://compare.fenxianglife.com/report/xianka-jiage.html">讯景</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 7900 XT 20 GB</td>
+<td>6,799，蓝宝石极地 OC</td>
+<td>11月18日跟踪，仅一条，不据此判断主流现货。<a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">按价位追踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>RX 7900 XTX 24 GB</td>
+<td>7,899，蓝宝石白金 OC</td>
+<td>同上，单条零售样本。<a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">按价位追踪</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 3050 6 GB</td>
+<td>1,849，铭瑄 TR</td>
+<td>11月18日零售跟踪。8 GB 版独立记录为待核。<a href="https://compare.fenxianglife.com/p/maxsun-geforce-ms-rtx3050-tr-6g-aqjthhir7t.html">商品跟踪</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 3060 12 GB</td>
+<td>2,999，铭瑄 TRB</td>
+<td>11月18日单 SKU 零售跟踪，关注旧货与保修。<a href="https://compare.fenxianglife.com/b/maxsun-xianka.html">品牌跟踪</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5050 8 GB</td>
+<td>2,099，铭瑄 TRB；2,299，华硕 DUAL</td>
+<td>11月18日零售跟踪。<a href="https://compare.fenxianglife.com/p/maxsun-geforce-rtx-5050-trb-8g-ktvnctl2h3.html">铭瑄</a> · <a href="https://compare.fenxianglife.com/p/asus-dual-geforce-rtx-5050-o8g-xitdzzg6iu.html">华硕</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5060 8 GB</td>
+<td>2,799，华硕 DUAL 白；2,949，七彩虹战斧 DUO</td>
+<td>11月18日零售跟踪。<a href="https://compare.fenxianglife.com/p/asus-dual-geforce-rtx-5060-o8g-white-rgx3fu22cw.html">华硕</a> · <a href="https://compare.fenxianglife.com/p/colorful-geforce-rtx-5060-duo-8gb-tiug4m63vl.html">七彩虹</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5060 Ti 8 GB</td>
+<td>3,399，七彩虹 Mini；4,069，技嘉冰猎鹰</td>
+<td>11月18日比价快照。<a href="https://compare.fenxianglife.com/c/xianka.html">当前价位和型号</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5060 Ti 16 GB</td>
+<td>5,399，华硕 DUAL；5,462 左右，影驰金属大师；7,299，万丽黑星际</td>
+<td>11月18日多 SKU 跟踪，按同版供货询价。<a href="https://compare.fenxianglife.com/c/xianka-4000-8000.html">华硕</a> · <a href="https://compare.fenxianglife.com/b/galax-xianka.html">影驰</a> · <a href="https://compare.fenxianglife.com/rank/xianka-jiangjia.html">万丽</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5070 12 GB</td>
+<td>5,159，技嘉魔鹰；5,256，七彩虹战斧；6,899，华硕 ROG</td>
+<td>11月18日多 SKU 跟踪。<a href="https://compare.fenxianglife.com/c/xianka.html">显卡比价</a> · <a href="https://compare.fenxianglife.com/report/xianka-jiage.html">战斧</a> · <a href="https://compare.fenxianglife.com/p/bfcf2190a-rog-strix-geforce-rtx-5070-o12g-gaming-hy6guyqs36.html">华硕 ROG</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5070 Ti 16 GB</td>
+<td>7,549，微星魔龙姬；8,099，七彩虹 Ultra OC SFF；10,399，技嘉</td>
+<td>11月18日跟踪渠道，技嘉明确库存未确认。<a href="https://compare.fenxianglife.com/report/xianka-jiage.html">微星</a> · <a href="https://compare.fenxianglife.com/c/xianka.html">七彩虹</a> · <a href="https://gputally.com/zh">技嘉</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5080 16 GB</td>
+<td>8,999，微星万图师；12,833，涡轮类含税均价；15,399，华硕白夜神</td>
+<td>11月16日批发索引与11月18日零售快照，多规格价格分布较宽。<a href="https://compare.fenxianglife.com/report/xianka-jiage.html">微星</a> · <a href="https://www.hiruibo.com/market/gpu.html">航业算力</a> · <a href="https://compare.fenxianglife.com/p/bfcf2190a-rog-astral-rtx5080-16g-white-63viwzzhbg.html">华硕</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 3090 24 GB</td>
+<td>9,798，双宽涡轮均价</td>
+<td>11月16日批发索引。原厂、成色、质保待核，不能从涡轮字样推断是原厂卡。<a href="https://www.hiruibo.com/market/gpu.html">航业算力</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 4090／4090 D 24 GB</td>
+<td>23,920／20,554，双宽涡轮均价</td>
+<td>11月16日批发索引。另有 48 GB 改卡，须独立判断来源和保修。<a href="https://www.hiruibo.com/market/gpu.html">航业算力</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5090 D v2 24 GB</td>
+<td>19,999，影驰星曜 NOX；29,180，双宽涡轮均价</td>
+<td>11月18日零售跟踪及11月16日批发索引，渠道与卡体形态不同。<a href="https://compare.fenxianglife.com/report/xianka-jiage.html">影驰样本</a> · <a href="https://www.hiruibo.com/market/gpu.html">航业算力</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5090 D 初版 32 GB</td>
+<td>52,099，微星 VANGUARD SOC</td>
+<td>11月18日零售单样本。对照 v2 必须明确容量差。<a href="https://compare.fenxianglife.com/report/xianka-jiage.html">报价报告</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5090 32 GB</td>
+<td>43,785，双宽涡轮均价</td>
+<td>11月16日批发索引。聚合站同时列出的 26,899 样本标题是雷神 MIX-G2 整机，本表剔除该条作为单卡参考。<a href="https://www.hiruibo.com/market/gpu.html">航业算力</a> · <a href="https://gputally.com/zh">聚合原表</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>航业算力的 www 页面在内置浏览器触发证书主机名不符，未越过浏览器警告。表中该渠道样本来自公开搜索可见的 11月16日页面索引，缺商家实价和当前库存。RX 9050／9060 等 OEM 卡、RX 9060 XT LP、部分 RX 7000／6000 与 RTX 40／30 存量卡没有取得可靠同口径现价。它们已进型号总表，价格不由游戏性能反推。</p>
+<h4 id="section-24">专业桌面、服务器与整机</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>型号或平台</strong></th>
+<th><strong>可见报价</strong></th>
+<th><strong>证据与限制</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td>Radeon AI PRO R9700 32 GB，盈通 WA</td>
+<td>标价 <strong>17,999</strong>，页面显示优惠后 <strong>17,899.01</strong></td>
+<td>11月19日内置浏览器打开京东自营同款，页面列限时及 PLUS 折扣，可见购买入口。地区库存、公司批量含票价和交期仍待核。<a href="https://item.jd.com/100218862993.html">京东商品</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>R9700 其他 AIB</td>
+<td>10,999 为 2025年10月首发价，后有讯景券后 9,944.01 的历史报道</td>
+<td>时间与优惠口径不同，仅用于看历史基线。<a href="https://m.ithome.com/html/892764.htm">开售报道</a> · <a href="https://jd.zol.com.cn/1146/11460842.html">活动历史</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>R9600／R9600D／R9700S</td>
+<td>—</td>
+<td>有官方产品或目录，面向集成渠道询配置与交期</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon PRO W7900 48 GB</td>
+<td>约 33,264，2024 年历史促销</td>
+<td>京东工包条目的槽型描述有歧义，实际版型及当前包票价待核。<a href="https://ic-item.jd.com/100294128374.html">京东条目</a> · <a href="https://diy.zol.com.cn/910/9101154.html">历史活动</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon PRO W7800 32／48 GB</td>
+<td>—</td>
+<td>容量拆开询价。W7300 等近似称呼须有厂商料号与目录才能采纳</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4500 32 GB</td>
+<td>39,999，较早工包推荐卡片</td>
+<td>11月19日查询可见搜索索引，当前有效价待核。<a href="https://item.jd.com/product/gU_U_KYwm-9ahLnw2rwdXA.html">京东卡片所在页</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 5000 48／72 GB</td>
+<td>—</td>
+<td>同一京东 48 GB 产品列“现货”宣传，未取得对应可靠价格和承诺。两容量分询。<a href="https://item.jd.com/product/gU_U_KYwm-9ahLnw2rwdXA.html">京东 48 GB 入口</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 5500 84 GB</td>
+<td>—</td>
+<td>厂商有初步规格，机架/OEM 询货</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 6000 工作站版 96 GB</td>
+<td>120,000，跟踪快照；11月16日类目均价 112,732</td>
+<td>11月18日23时前后的京东第三方跟踪，当前样本库存未确认。<a href="https://gputally.com/zh">跟踪</a> · <a href="https://www.hiruibo.com/market/gpu.html">批发索引</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 6000 Max-Q 96 GB</td>
+<td>108,560，跟踪快照；11月16日类目均价 96,507</td>
+<td>11月18日跟踪被标为库存未确认。上一版更低的不同快照不能并为现价。<a href="https://gputally.com/zh">跟踪</a> · <a href="https://www.hiruibo.com/market/gpu.html">批发索引</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 6000D 84 GB</td>
+<td>68,599，跟踪显示工包服务器版</td>
+<td>11月18日样本。不能对照桌面满功率卡的售后或噪音。<a href="https://gputally.com/zh">跟踪</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>DGX Spark 与 GB10 OEM</td>
+<td>MSI 43,848、ASUS 43,939、技嘉 47,499、Dell 48,310、DGX Spark 和 HP 各 49,999、Lenovo 52,959</td>
+<td>11月18–19日浏览器可见快照；全为整机样本，SSD、系统和售后不同。<a href="https://gputally.com/zh">跟踪</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Ryzen AI Max+ 395 与 AMD Ryzen AI Halo 类</td>
+<td>—</td>
+<td>以具体 x86 整机、共享内存、系统镜像和公司报价为单位</td>
+</tr>
+<tr>
+<td>AMD／英伟达（NVIDIA）</td>
+<td>NVIDIA L 系、H 系、B 系、Rubin 与 AMD Instinct</td>
+<td>—</td>
+<td>优先核对服务器集成、交付地、冷却、驱动支持、维保和合法供货。单卡、整机、集群、云时价不能并列排序</td>
+</tr>
+</tbody>
+</table></div>
+<p><a id="us-market"></a></p>
+<h3 id="section-25">美国</h3>
+<p>美国单卡样本以美元计，记录了 2026年11月17日至19日可查的零售或跟踪价格。销售税、配送、促销、卖家和可送达邮编按结算条件核对。跟踪站的单日价格可用于对比量级，实际库存随地区变化。</p>
+<h4 id="section-26">消费级单卡</h4>
+<p>美元报价见 <a href="#gpu-table">综合总表</a>。Tom's Hardware 数据采于 11月17日，PlanMyPC 的 Amazon 样本采于 11月18日。RX 7900 XTX 和 RX 7900 GRE 的缺货仅限前者跟踪渠道。RTX 5090 为高价挂牌，卖家及到货待核。 <a href="https://www.tomshardware.com/pc-components/gpus/lowest-gpu-prices-tracking">Tom's Hardware 美国渠道跟踪</a> · <a href="https://planmypc.com/gpu-prices">PlanMyPC Amazon 样本</a></p>
+<h4 id="section-27">专业桌面与整机</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>型号</strong></th>
+<th style="text-align:right"><strong>美国可见报价（USD）</strong></th>
+<th><strong>供货证据</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td>ASRock Creator Radeon AI PRO R9700 32 GB</td>
+<td style="text-align:right">1,999.99</td>
+<td>11月19日查询的 Newegg 商品样本，页面列购买入口和有限期搭售赠品。核对销售方及配送。<a href="https://www.newegg.com/asrock-creator-r9700-ct-radeon-ai-pro-r9700-32gb-graphics-card/p/N82E16814930143">Newegg 商品</a></td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>技嘉 AI TOP／蓝宝石 Radeon AI PRO R9700 32 GB</td>
+<td style="text-align:right">2,259.97／2,379.99</td>
+<td>11月19日查询的 Newegg 同系列不同 SKU 样本，第三方选项及送达时间待核。<a href="https://www.newegg.com/p/pl?N=100006662&amp;d=Radeon+AI+Pro+R9700+32GB">Newegg 渠道样本</a></td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4500 Blackwell 32 GB</td>
+<td style="text-align:right">5,199（PNY）／4,799.99（OEM）</td>
+<td>B&amp;H 较早的页面快照，OEM 价格含即时折扣。11月19日查询时未确认当日结算价和库存。<a href="https://www.bhphotovideo.com/c/compare/PNY_RTX%2BPRO%2B4500_vs_NVIDIA_4500%2BBlackwell/BHitems/1898512-REG_1938760-REG">B&amp;H 商品对照</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>美国样本用于比较当地市场。跨地区比较需核对同料号和采购条件，分别计入销售税或发票税务、转运、售后、保修和公司结算成本。</p>
+<h3 id="section-28">全生命周期成本</h3>
+<ul>
+<li>同一功能且内核支持的前提下，再看每 GB、帧率/元、token/s/元。举例，R9700 按页面标价约 562 元/GB，RTX 5070 Ti 按 8,099 约 506 元/GB，RTX PRO 4500 较早工包记录约 1,250 元/GB。第一项是商品标价，后两项是跟踪或历史条件，适合谈价量级参考</li>
+<li>以同样业务任务核算整机。算购置与增容、交付镜像和回归、维护和工单、用电、残值。工作站间若速度不同，等时长能耗应另按等任务能耗验证。输入 1,000 小时、0.8 元/kWh 和功耗差 0.25 kW 的示例，对应 200 元/年</li>
+<li>租用与采购采用相同模型、批量、精度和验收线。记录实例地区、GPU 真正分配、预装运行时间、存储及传输。向不同渠道问同日期、同型号、同交付地址和公司发票的实际条件。 <a href="https://autodl.com/">AutoDL 公开入口</a></li>
+</ul>
+<p>本轮未对每款历史产品、区域 OEM、旧笔记本逐一获取成交报价。型号总表中的目录条目只证明可识别，当前库存以渠道条目和结算条件为准。</p>
+<p><a id="scenarios"></a></p>
+<h2 id="section-29">五、场景选型与专项案例</h2>
+<h3 id="section-30">场景选型</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>主要目标</strong></th>
+<th><strong>首先比较</strong></th>
+<th><strong>改选条件</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制预算，工作负载装得进 8–12 GB</td>
+<td>用现有 5060 笔记本与 5070 台式机先测，采购再看 5050／5060／9060 XT 8 GB／9070 GRE</td>
+<td>达到上下文目标或多模型驻留之前，先评估升至 16 GB 的成本</td>
+</tr>
+<tr>
+<td>16 GB 通用工作站</td>
+<td>RX 9060 XT 16 GB、RTX 5060 Ti 16 GB 同容量。更高吞吐看 RX 9070／XT、RTX 5070 Ti／5080</td>
+<td>必须运行 CUDA 算子、OptiX、指定插件或较高光追时按应用复测；预算以 11月渠道数据重新询价</td>
+</tr>
+<tr>
+<td>20–24 GB 项目</td>
+<td>RX 7900 XT／XTX、RTX 3090／4090、RTX PRO 4000／SFF、5090 D v2</td>
+<td>关注旧货、质保、板卡功耗。长文本或者 27–35B 模型使应用超显存时，提升单卡容量更直接</td>
+</tr>
+<tr>
+<td>32 GB 本地开发与推理</td>
+<td>Radeon R9600/D、R9700、RTX 5000 Ada 及 RTX PRO 4500；5090 做高速对照</td>
+<td>同容量下比较长输入、语音与扩展栈、噪声和实际含票价。R9600D 更省板卡功耗，需验证并发吞吐</td>
+</tr>
+<tr>
+<td>48–96 GB 模型与工程</td>
+<td>W7800/W7900 48、RTX A6000/6000 Ada、RTX PRO 5000 48/72、PRO 5500/6000</td>
+<td>70B Q4 先测 48 GB，长上下文或并发再看 72–96 GB。多卡优先由模型切分或独立任务需要来决定</td>
+</tr>
+<tr>
+<td>紧凑超大内存或高并发服务</td>
+<td>Ryzen AI Max／Halo 与 DGX Spark 等统一内存设备，或带实际工作负载的服务器／云对照</td>
+<td>共享内存实际预算、Arm64 支持和带宽可能改变适用范围。长期服务按 SLA、稳定性和整机能耗采购</td>
+</tr>
+</tbody>
+</table></div>
+<p>显卡标价之外，三年成本估算包含主机改配、机箱散热、工程移植、更新回归、售后和能耗。耗电按同工作量的整机功率与用时计算。如果考虑批量预装，两方案每台含票差价乘以承诺数量，再扣新增适配、售后和供应替换成本，剩下才是可实现收益。报价样本和价差计算见 <a href="#china-market">中国大陆价格与供货</a>。</p>
+<h3 id="section-31">专项案例 盈通 R9700 工作站</h3>
+<p><a href="r9700.html">盈通 Radeon AI PRO R9700 对标调研</a></p>
+<h4 id="section-32">型号、整机条件与用途</h4>
+<p><strong>AMD 设计 GPU，盈通（Yeston）提供数算版 WA 板卡。</strong> 该卡属于 Radeon AI PRO R9700，采用 Navi 48，配 32 GB GDDR6 和双槽涡轮，含挡片约 280 × 125 × 40 mm。AMD 参考板卡功耗为 300 W、显存带宽为 640 GB/s，建议整机电源为 750 W，官方规格中的显存 ECC 支持范围为 Linux。附件中的 B650、7800X3D、2×16 GB 和 850 W 是测试台配置。批量交付前需拿到正式整机料号，核对机箱余量、进出风、供电线、满载噪音和质保。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">AMD R9700 产品资料</a></p>
+<p>32 GB 可用于本地 35B Q4 办公 Agent，也给较重的生图工作流留出显存。办公 Agent 用实际 GGUF、上下文和并发测驻留，再跑跨文档、工具调用和成果交付。生图用实际模型、节点和批量测峰值显存。同容量可用英伟达 RTX 5090 对照吞吐，用 RTX PRO 4500 对照较低功耗的专业方案。附件记录的 Time Spy 28,222、Fire Strike 67,761 和鲁大师 984,614 缺原始结果与分项口径，留作样机复测记录。 <a href="#benchmarks">性能</a> · <a href="r9700.html">R9700 应用对标</a></p>
+<h4 id="section-33">公开单卡报价与样机估算</h4>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>价格口径</strong></th>
+<th style="text-align:right"><strong>金额（人民币）</strong></th>
+<th><strong>条件</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单卡页面标价</td>
+<td style="text-align:right"><strong>17,999 元／张</strong></td>
+<td>2026年11月19日京东自营同款 SKU 的页面标价，作为样机预算计算基准</td>
+</tr>
+<tr>
+<td>单卡页面优惠价</td>
+<td style="text-align:right"><strong>17,899.01 元／张</strong></td>
+<td>同次页面快照，含当时活动和 PLUS 条件。到货、发票和交期按实际订单核对</td>
+</tr>
+<tr>
+<td>单台样机硬件估算</td>
+<td style="text-align:right"><strong>21,999–24,999 元／台，预算可按约 2.2–2.5 万元预留</strong></td>
+<td>17,999 元显卡，加 4,000–7,000 元其余主机硬件占位预算。假设单卡、B650 级平台、32 GB 内存和 850 W 级电源，包含 CPU、主板、SSD、机箱和基础散热。其余主机金额是内部测算假设</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://item.jd.com/100218862993.html">盈通京东单卡商品</a></p>
+<p>零售单卡和自建样机估算用于市场对照。企业镜像、驱动固定、离线模型授权和售后支持按双方确认的交付范围另行核对。</p>
+<h4 id="section-34">交付路径</h4>
+<p>工作站预装可交付办公 Agent、生图或两者。办公 Agent 先验证 Windows 文本推理，固定 aios、llama-server Vulkan 构建和驱动，确认首次开机、模型加载、GPU 使用和离线恢复。再用英伟达 CUDA 环境对跑相同模型和办公任务。生图、语音、多模态、量化和卸载按交付范围验收。若要双卡或生产推理服务，再测实际平台的 PCIe 拓扑、标准后端、并发和持续满载。 <a href="#validation">DreamSoul 预装验收</a></p>
+<p><a id="validation"></a></p>
+<h3 id="section-35">DreamSoul 预装验收</h3>
+<h4 id="section-36">DreamSoul 样机验证设计</h4>
+<h5 id="section-37">固定测试条件</h5>
+<ul>
+<li><strong>样机</strong> 盈通 R9700 原工作站、当前项目 RTX 5070 12 GB、同容量的 RTX PRO 4500 或 5090 32 GB；16 GB 低成本备选增加 Radeon RX 9060 XT 和 RTX 5060 Ti 或 5070 Ti。每个对照记录 CPU、RAM、SSD、BIOS、PCIe 链路、显卡料号、VBIOS、功耗限制和室温</li>
+<li><strong>镜像</strong> 固定 DreamSoul/aios 构建和模型哈希、Windows 版本、驱动、llama-server 版本与后端；Linux 固定发行版和内核、容器与 ROCm/CUDA。协议分为同后端控制实验和各卡推荐稳定后端的交付实验</li>
+<li><strong>负载</strong> 采用 7–8B Q4 和约 27–35B Q4，由实际办公任务覆盖长文本、资料检索、工具调用和成果文件。生图按交付范围固定模型、节点、种子、尺寸和批量。嵌入与语音按功能验证。量化研发另测校准、制品恢复与困惑度（PPL），对照固定参考输出</li>
+<li><strong>计量</strong> 记录成功率、预填充 token/s、生成 token/s、首 token 中位数与 P95、峰值 VRAM/RAM、实际 GPU 层数、墙上功耗、噪声、吞吐/瓦及每次任务耗电。按冷热启动、4k／16k／32k 和并发 1／4／8 必要组合记录，每组至少三次，有波动时增加次数并保留原始日志</li>
+</ul>
+<h5 id="section-38">预装验收表</h5>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>环节</strong></th>
+<th><strong>操作</strong></th>
+<th><strong>通过证据</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>首次开机</td>
+<td>用量产候选镜像，首次启动配置，验证默认显卡与后端</td>
+<td>普通账号可启动，无手工修 DLL。日志显式显示 GPU 与目标后端</td>
+</tr>
+<tr>
+<td>真实模型加载</td>
+<td>用目标 GGUF 和上下文，确认 GPU 层、显存峰值及 UI 可交互</td>
+<td>在约定模型/上下文范围通过；可明确观察到预期的 GPU 驻留和回退</td>
+</tr>
+<tr>
+<td>办公 Agent</td>
+<td>多份报价核对并生成对比表</td>
+<td>数值、来源和文件核对通过，全程耗时达标</td>
+</tr>
+<tr>
+<td>生图预装</td>
+<td>用交付镜像跑固定工作流</td>
+<td>出图用时、峰值显存和连续出图稳定性达标</td>
+</tr>
+<tr>
+<td>连续工作流</td>
+<td>多轮对话、取消、切换模型、后台任务、恢复、重新启动</td>
+<td>GPU 资源按应用约定释放，失败可诊断，响应及 P95 达到约定指标</td>
+</tr>
+<tr>
+<td>语音与多模态</td>
+<td>ASR、TTS、图像输入按交付清单逐项测，检查输出与质量</td>
+<td>语音和图像均经端到端验收并保留可复现样本；如只有文本版，以实际 SKU 承诺为准</td>
+</tr>
+<tr>
+<td>长时稳定与热工</td>
+<td>满载持续运行，模拟办公空闲、睡眠恢复和驱动更新</td>
+<td>无丢卡、驱动重置或不可恢复回退；功耗、温度、噪声保持在合同约定内</td>
+</tr>
+<tr>
+<td>离线与升级</td>
+<td>已授权模型离线可用，旧镜像可恢复，检查服务、更新和回滚</td>
+<td>支持流程、驱动版本、模型许可证与分发责任明确；复现所需制品可追踪</td>
+</tr>
+<tr>
+<td>研发特性</td>
+<td>执行固定 CUDA/ROCm 真模型校准、制品、数值与性能测试</td>
+<td>只有在目标环境通过全部对应协议后才记为可移植；保留异常日志</td>
+</tr>
+</tbody>
+</table></div>
+<p>指标的通过线由产品定位、用户工作流和现有 CUDA 对照共同确定。当前公开数据可用于选样机和设计测试，本表未在合作机器执行。</p>
+<h3 id="section-39">局限与待补证据</h3>
+<ul>
+<li>一部分 OEM、区域、专业与历史变体只能确认目录或市场存在，仍缺可核实的地区成交、企业供货和完整规格。型号总表按公开可定位的型号和关键版型对照，较老历史段保留来源及核验深度</li>
+<li>价格表覆盖各消费档、主要专业档和统一内存整机样本，数据中心整机与部分工作站采用询价制。航业算力的 www 页面出现证书错误，记录采用公开索引，不使用可疑页面</li>
+<li>游戏样本较广，专业 CAD、生图以各自协议横比，公开跑分无法覆盖每个 SKU 与软件版本。机器和 DreamSoul 安装包未实测。需要的验收输入和指标已列入对应文档</li>
+</ul>
+<p><span class="local-ref" title="工作区资料">历史资料与来源索引</span></p>
+<p><a id="gpu-table"></a></p>
+<h2 id="section-40">附录 独立显卡综合总表</h2>
+<p>273 条型号与版本按 GPU 设计厂商和形态排列。同一行可看显存、参考功耗、实测和中美报价。对照数据时，可到 <a href="#benchmarks">性能</a> 看测试环境，到 <a href="#china-market">中国大陆</a> 和 <a href="#us-market">美国</a> 核对具体 SKU、日期与供货。</p>
+<ul>
+<li><strong>参考规格</strong> 显存容量以 GB 计，功耗以 W 计。移动端为目录 TGP，实际整机设定可能不同</li>
+<li><strong>性能</strong> 1440p 为同一来源的光栅／光追 FPS。其他测试保留原指标和单位，跨项目不混算。型号或显存变体无法唯一匹配时，数据留在性能章节</li>
+<li><strong>报价</strong> 中国大陆为人民币，美国为美元。主列列示已采集样本的范围或典型值，括注历史、批发和跟踪口径。破折号表示没取得该字段的可匹配证据</li>
+</ul>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>形态</strong></th>
+<th><strong>型号</strong></th>
+<th><strong>显存与类型</strong></th>
+<th><strong>功耗 W</strong></th>
+<th><strong>架构、带宽或口径</strong></th>
+<th><strong>1440p 光栅／光追 FPS</strong></th>
+<th><strong>专项性能</strong></th>
+<th><strong>中国大陆价（元）</strong></th>
+<th><strong>美国价（USD）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9070 XT</td>
+<td>16 GDDR6</td>
+<td>304</td>
+<td>640 GB/s · 当前目录</td>
+<td>116.5／55.5</td>
+<td>Steel Nomad 7,273（1.04× R9700）<br>V-Ray 278 s ／ Redshift 192 s ／ Cinebench 52,327 ／ Blender 3,722<br>SD1.5 FP16 2,598 ／ INT8 — ／ SDXL 2,010、18.656 s/张</td>
+<td>5,299–6,199</td>
+<td>959.99</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9070</td>
+<td>16 GDDR6</td>
+<td>220</td>
+<td>640 GB/s · 当前目录</td>
+<td>104.0／47.6</td>
+<td>SD1.5 FP16 2,280 ／ INT8 — ／ SDXL 1,805、20.775 s/张</td>
+<td>5,699–6,999</td>
+<td>749</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9070 GRE</td>
+<td>12 GDDR6</td>
+<td>220</td>
+<td>432 GB/s · 当前目录</td>
+<td>86.6／37.3</td>
+<td>SD1.5 FP16 1,930 ／ INT8 18,332 ／ SDXL 1,544、24.277 s/张</td>
+<td>3,679–4,899</td>
+<td>729</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9060 XT 16GB</td>
+<td>16 GDDR6</td>
+<td>160</td>
+<td>320 GB/s · 当前目录</td>
+<td>67.3／31.0</td>
+<td>SD1.5 FP16 1,436 ／ INT8 — ／ SDXL 1,124、33.359 s/张</td>
+<td>2,988–3,999</td>
+<td>729</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9060 XT 8GB</td>
+<td>8 GDDR6</td>
+<td>150</td>
+<td>320 GB/s · 当前目录</td>
+<td>62.5／20.2</td>
+<td>—</td>
+<td>2,499</td>
+<td>539</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 9060 XT LP</td>
+<td>16 GDDR6</td>
+<td>140</td>
+<td>320 GB/s · 当前目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 9060</td>
+<td>8 GDDR6</td>
+<td>132</td>
+<td>288 GB/s · 当前目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 9050 8GB</td>
+<td>8 GDDR6</td>
+<td>92</td>
+<td>288 GB/s · 当前目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 9050 4GB</td>
+<td>4 GDDR6</td>
+<td>92</td>
+<td>144 GB/s · 当前目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7900 XTX</td>
+<td>24 GDDR6</td>
+<td>355</td>
+<td>960 GB/s · 前代目录</td>
+<td>122.3／50.5</td>
+<td>V-Ray 257 s ／ Redshift 157 s ／ Cinebench 63,581 ／ Blender 4,941</td>
+<td>7,899</td>
+<td>跟踪渠道缺货</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7900 XT</td>
+<td>20 GDDR6</td>
+<td>315</td>
+<td>800 GB/s · 前代目录</td>
+<td>108.0／43.5</td>
+<td>—</td>
+<td>6,799</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7900 GRE</td>
+<td>16 GDDR6</td>
+<td>260</td>
+<td>576 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>跟踪渠道缺货</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7800 XT</td>
+<td>16 GDDR6</td>
+<td>263</td>
+<td>624 GB/s · 前代目录</td>
+<td>84.7／33.5</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7700 XT</td>
+<td>12 GDDR6</td>
+<td>245</td>
+<td>432 GB/s · 前代目录</td>
+<td>72.7／25.3</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7700</td>
+<td>16 GDDR6</td>
+<td>263</td>
+<td>624 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>地区桌面</td>
+<td>RX 7650 GRE</td>
+<td>8 GDDR6</td>
+<td>170</td>
+<td>288 GB/s · 中国官网</td>
+<td>—</td>
+<td>—</td>
+<td>1,999</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7600 XT</td>
+<td>16 GDDR6</td>
+<td>190</td>
+<td>288 GB/s · 前代目录</td>
+<td>50.2／18.1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 7600</td>
+<td>8 GDDR6</td>
+<td>165</td>
+<td>288 GB/s · 前代目录</td>
+<td>45.4／9.3</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 7400</td>
+<td>8 GDDR6</td>
+<td>55</td>
+<td>173 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7900M</td>
+<td>16 GDDR6</td>
+<td>≤180</td>
+<td>576 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7800M</td>
+<td>12 GDDR6</td>
+<td>≤180</td>
+<td>432 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7700S</td>
+<td>8 GDDR6</td>
+<td>≤100</td>
+<td>288 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7600S</td>
+<td>8 GDDR6</td>
+<td>≤75</td>
+<td>256 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7600M XT</td>
+<td>8 GDDR6</td>
+<td>≤120</td>
+<td>288 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 7600M</td>
+<td>8 GDDR6</td>
+<td>≤90</td>
+<td>256 GB/s · 前代目录</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6950 XT</td>
+<td>16 GDDR6</td>
+<td>335</td>
+<td>576 GB/s · 存量观察</td>
+<td>89.5／32.8</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6900 XT</td>
+<td>16 GDDR6</td>
+<td>300</td>
+<td>512 GB/s · 存量观察</td>
+<td>83.9／32.1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6800 XT Midnight Black</td>
+<td>16 GDDR6</td>
+<td>300</td>
+<td>512 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6800 XT</td>
+<td>16 GDDR6</td>
+<td>300</td>
+<td>512 GB/s · 存量观察</td>
+<td>79.6／29.6</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6800</td>
+<td>16 GDDR6</td>
+<td>250</td>
+<td>512 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6750 XT</td>
+<td>12 GDDR6</td>
+<td>250</td>
+<td>432 GB/s · 存量观察</td>
+<td>57.6／19.1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>地区桌面</td>
+<td>RX 6750 GRE 12GB</td>
+<td>12 GDDR6</td>
+<td>—</td>
+<td>中国驱动目录／零售</td>
+<td>—</td>
+<td>—</td>
+<td>3,299</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>地区桌面</td>
+<td>RX 6750 GRE 10GB</td>
+<td>10 GDDR6</td>
+<td>—</td>
+<td>中国驱动目录／零售</td>
+<td>—</td>
+<td>—</td>
+<td>2,599</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6700 XT</td>
+<td>12 GDDR6</td>
+<td>230</td>
+<td>384 GB/s · 存量观察</td>
+<td>54.3／18.0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6700</td>
+<td>10 GDDR6</td>
+<td>175</td>
+<td>320 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6650 XT</td>
+<td>8 GDDR6</td>
+<td>180</td>
+<td>280 GB/s · 存量观察</td>
+<td>38.0／9.2</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6600 XT</td>
+<td>8 GDDR6</td>
+<td>160</td>
+<td>256 GB/s · 存量观察</td>
+<td>40.7／9.1</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6600</td>
+<td>8 GDDR6</td>
+<td>132</td>
+<td>224 GB/s · 存量观察</td>
+<td>24.8／7.7</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6500 XT 8GB</td>
+<td>8 GDDR6</td>
+<td>113</td>
+<td>144 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6500 XT 4GB</td>
+<td>4 GDDR6</td>
+<td>107</td>
+<td>144 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>1,249</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 6400</td>
+<td>4 GDDR6</td>
+<td>53</td>
+<td>128 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6850M XT</td>
+<td>12 GDDR6</td>
+<td>≤165</td>
+<td>432 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6800M</td>
+<td>12 GDDR6</td>
+<td>145+</td>
+<td>384 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6800S</td>
+<td>8 GDDR6</td>
+<td>≤100</td>
+<td>256 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6700M</td>
+<td>10 GDDR6</td>
+<td>≤135</td>
+<td>320 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6700S</td>
+<td>8 GDDR6</td>
+<td>≤80</td>
+<td>224 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6650M XT</td>
+<td>8 GDDR6</td>
+<td>≤120</td>
+<td>256 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6650M</td>
+<td>8 GDDR6</td>
+<td>≤120</td>
+<td>256 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6600M</td>
+<td>8 GDDR6</td>
+<td>≤100</td>
+<td>224 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6600S</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6550M</td>
+<td>4 GDDR6</td>
+<td>≤80</td>
+<td>144 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6550S</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6500M</td>
+<td>4 GDDR6</td>
+<td>≤50</td>
+<td>128 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6450M</td>
+<td>4 GDDR6</td>
+<td>≤50</td>
+<td>128 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 6300M</td>
+<td>2 GDDR6</td>
+<td>≤25</td>
+<td>64 GB/s · 存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 5700 XT 50th Anniversary</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 5700 XT</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 5700</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 5600 XT</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 5600</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费桌面</td>
+<td>RX 5500 XT</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 5500</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>OEM 桌面</td>
+<td>RX 5300</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 5700M</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 5600M</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 5500M</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>消费移动</td>
+<td>RX 5300M</td>
+<td>—</td>
+<td>—</td>
+<td>存量观察</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5090</td>
+<td>32 GDDR7</td>
+<td>575</td>
+<td>512 bit · 当前目录</td>
+<td>167.3／100.8</td>
+<td>Steel Nomad 14,636（2.09× R9700）<br>V-Ray 133 s ／ Redshift 57 s ／ Cinebench 151,418 ／ Blender 15,872<br>Qwen 35B MoE 早期 Q4 配对 194.0 tok/s</td>
+<td>43,785（涡轮均价）</td>
+<td>6,549–7,799.99</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5090 D</td>
+<td>32 GDDR7</td>
+<td>575</td>
+<td>512 bit · 地区版核对</td>
+<td>—</td>
+<td>—</td>
+<td>52,099</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5090 D v2</td>
+<td>24 GDDR7</td>
+<td>575</td>
+<td>384 bit · 地区版核对</td>
+<td>—</td>
+<td>—</td>
+<td>19,999（零售）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5080</td>
+<td>16 GDDR7</td>
+<td>360</td>
+<td>256 bit · 当前目录</td>
+<td>128.3／74.0</td>
+<td>Steel Nomad 8,938（1.28× R9700）<br>V-Ray 181 s ／ Redshift 82 s ／ Cinebench 104,970 ／ Blender 9,035</td>
+<td>8,999–15,399（零售）</td>
+<td>2,235–2,670.02</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5070 Ti</td>
+<td>16 GDDR7</td>
+<td>300</td>
+<td>256 bit · 当前目录</td>
+<td>116.8／66.2</td>
+<td>Steel Nomad 6,967（0.99× R9700）<br>V-Ray 220 s ／ Redshift 89 s ／ Cinebench 99,703 ／ Blender 7,882<br>SD1.5 FP16 3,755 ／ INT8 46,744 ／ SDXL 3,352、11.184 s/张</td>
+<td>7,549–10,399</td>
+<td>1,400–1,499</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5070</td>
+<td>12 GDDR7</td>
+<td>250</td>
+<td>192 bit · 当前目录</td>
+<td>96.4／51.5</td>
+<td>Steel Nomad 5,340（0.76× R9700）<br>V-Ray 247 s ／ Redshift 104 s ／ Cinebench 75,629 ／ Blender 5,968<br>SD1.5 FP16 2,937 ／ INT8 36,320 ／ SDXL 2,473、15.163 s/张</td>
+<td>5,159–6,899</td>
+<td>869.99</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5060 Ti 16GB</td>
+<td>16 GDDR7</td>
+<td>180</td>
+<td>128 bit · 当前目录</td>
+<td>73.4／38.9</td>
+<td>SD1.5 FP16 2,110 ／ INT8 27,705 ／ SDXL 1,940、20.409 s/张</td>
+<td>5,399–7,299</td>
+<td>799</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5060 Ti 8GB</td>
+<td>8 GDDR7</td>
+<td>180</td>
+<td>128 bit · 当前目录</td>
+<td>68.6／26.6</td>
+<td>—</td>
+<td>3,399–4,069</td>
+<td>499</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5060</td>
+<td>8 GDDR7</td>
+<td>145</td>
+<td>128 bit · 当前目录</td>
+<td>59.8／24.6</td>
+<td>—</td>
+<td>2,799–2,949</td>
+<td>449</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 5050</td>
+<td>8 GDDR6</td>
+<td>130</td>
+<td>128 bit · 当前目录</td>
+<td>45.2／18.7</td>
+<td>—</td>
+<td>2,099–2,299</td>
+<td>399</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4090</td>
+<td>24 GDDR6X</td>
+<td>450</td>
+<td>384 bit · 前代／存量</td>
+<td>143.4／87.7</td>
+<td>Steel Nomad 9,225（1.32× R9700）</td>
+<td>23,920（涡轮均价）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4090 D</td>
+<td>24 GDDR6X</td>
+<td>425</td>
+<td>384 bit · 中国官网</td>
+<td>—</td>
+<td>—</td>
+<td>20,554（涡轮均价）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4080 SUPER</td>
+<td>16 GDDR6X</td>
+<td>320</td>
+<td>256 bit · 前代／存量</td>
+<td>118.6／69.5</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4080</td>
+<td>16 GDDR6X</td>
+<td>320</td>
+<td>256 bit · 前代／存量</td>
+<td>117.5／68.4</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4070 Ti SUPER</td>
+<td>16 GDDR6X</td>
+<td>285</td>
+<td>256 bit · 前代／存量</td>
+<td>104.0／60.0</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4070 Ti</td>
+<td>12 GDDR6X</td>
+<td>285</td>
+<td>192 bit · 前代／存量</td>
+<td>97.9／55.3</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4070 SUPER</td>
+<td>12 GDDR6X</td>
+<td>220</td>
+<td>192 bit · 前代／存量</td>
+<td>91.2／43.6</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4070 GDDR6X</td>
+<td>12 GDDR6X</td>
+<td>200</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4070 GDDR6</td>
+<td>12 GDDR6</td>
+<td>200</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4060 Ti 16GB</td>
+<td>16 GDDR6</td>
+<td>165</td>
+<td>128 bit · 前代／存量</td>
+<td>60.5／32.7</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4060 Ti 8GB</td>
+<td>8 GDDR6</td>
+<td>160</td>
+<td>128 bit · 前代／存量</td>
+<td>58.9／25.7</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 4060</td>
+<td>8 GDDR6</td>
+<td>115</td>
+<td>128 bit · 前代／存量</td>
+<td>47.6／21.3</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3090 Ti</td>
+<td>24 GDDR6X</td>
+<td>450</td>
+<td>384 bit · 前代／存量</td>
+<td>99.9／52.2</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3090</td>
+<td>24 GDDR6X</td>
+<td>350</td>
+<td>384 bit · 前代／存量</td>
+<td>91.5／47.4</td>
+<td>—</td>
+<td>9,798（涡轮均价）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3080 Ti</td>
+<td>12 GDDR6X</td>
+<td>350</td>
+<td>384 bit · 前代／存量</td>
+<td>89.1／46.2</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3080 12GB</td>
+<td>12 GDDR6X</td>
+<td>350</td>
+<td>384 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3080 10GB</td>
+<td>10 GDDR6X</td>
+<td>320</td>
+<td>320 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3070 Ti</td>
+<td>8 GDDR6X</td>
+<td>290</td>
+<td>256 bit · 前代／存量</td>
+<td>66.9／27.7</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3070</td>
+<td>8 GDDR6</td>
+<td>220</td>
+<td>256 bit · 前代／存量</td>
+<td>58.2／26.2</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3060 Ti GDDR6X</td>
+<td>8 GDDR6X</td>
+<td>200</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3060 Ti GDDR6</td>
+<td>8 GDDR6</td>
+<td>200</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3060 12GB</td>
+<td>12 GDDR6</td>
+<td>170</td>
+<td>192 bit · 前代／存量</td>
+<td>41.9／20.7</td>
+<td>—</td>
+<td>2,999</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3060 8GB</td>
+<td>8 GDDR6</td>
+<td>170</td>
+<td>128 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3050 8GB</td>
+<td>8 GDDR6</td>
+<td>130</td>
+<td>128 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 3050 6GB</td>
+<td>6 GDDR6</td>
+<td>70</td>
+<td>96 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>1,849</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2080 Ti</td>
+<td>11 GDDR6</td>
+<td>260</td>
+<td>352 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2080 SUPER</td>
+<td>8 GDDR6</td>
+<td>250</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2080</td>
+<td>8 GDDR6</td>
+<td>225</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2070 SUPER</td>
+<td>8 GDDR6</td>
+<td>215</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2070</td>
+<td>8 GDDR6</td>
+<td>185</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2060 SUPER</td>
+<td>8 GDDR6</td>
+<td>175</td>
+<td>256 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2060 12GB</td>
+<td>12 GDDR6</td>
+<td>185</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>RTX 2060 6GB</td>
+<td>6 GDDR6</td>
+<td>160</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1660 Ti</td>
+<td>6 GDDR6</td>
+<td>120</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1660 SUPER</td>
+<td>6 GDDR6</td>
+<td>125</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1660</td>
+<td>6 GDDR5</td>
+<td>120</td>
+<td>192 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1650 SUPER</td>
+<td>4 GDDR6</td>
+<td>100</td>
+<td>128 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1650 GDDR5</td>
+<td>4 GDDR5</td>
+<td>75</td>
+<td>128 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1650 GDDR6</td>
+<td>4 GDDR6</td>
+<td>75</td>
+<td>128 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费桌面</td>
+<td>GTX 1630</td>
+<td>4 GDDR6</td>
+<td>75</td>
+<td>64 bit · 前代／存量</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>AI PRO R9700</td>
+<td>32 GDDR6</td>
+<td>300</td>
+<td>RDNA 4 · D · 640 GB/s</td>
+<td>—</td>
+<td>Steel Nomad 7,008（1.00× R9700）<br>V-Ray 274 s ／ Redshift 207 s ／ Cinebench 49,771 ／ Blender 3,726<br>Qwen 35B MoE 早期 Q4 配对 127.4 tok/s</td>
+<td>17,899.01（盈通优惠后）</td>
+<td>1,999.99–2,379.99（不同品牌）</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>AI PRO R9700S</td>
+<td>32 GDDR6</td>
+<td>300</td>
+<td>RDNA 4 · D/被动 · 640 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>AI PRO R9600</td>
+<td>32 GDDR6</td>
+<td>150</td>
+<td>RDNA 4 · D/集成商 · 640 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>AI PRO R9600D</td>
+<td>32 GDDR6</td>
+<td>150</td>
+<td>RDNA 4 · D/集成商 · 640 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7900</td>
+<td>48 GDDR6</td>
+<td>295</td>
+<td>RDNA 3 · D · 864 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>33,264（2024 历史）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7900 Dual Slot</td>
+<td>48 GDDR6</td>
+<td>295</td>
+<td>RDNA 3 · D · 864 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7800 48GB</td>
+<td>48 GDDR6</td>
+<td>260</td>
+<td>RDNA 3 · D · 864 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7800 32GB</td>
+<td>32 GDDR6</td>
+<td>260</td>
+<td>RDNA 3 · D · 576 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7700</td>
+<td>16 GDDR6</td>
+<td>190</td>
+<td>RDNA 3 · D · 576 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7600</td>
+<td>8 GDDR6</td>
+<td>130</td>
+<td>RDNA 3 · D · 288 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7500</td>
+<td>8 GDDR6</td>
+<td>70</td>
+<td>RDNA 3 · D · 256 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W7400</td>
+<td>8 GDDR6</td>
+<td>55</td>
+<td>RDNA 3 · D · 172.8 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO W7500M</td>
+<td>8 GDDR6</td>
+<td>50–90</td>
+<td>RDNA 3 · M · 256 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W6800</td>
+<td>32 GDDR6</td>
+<td>250</td>
+<td>RDNA 2 · D · 512 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W6600</td>
+<td>8 GDDR6</td>
+<td>130</td>
+<td>RDNA 2 · D · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W6400</td>
+<td>4 GDDR6</td>
+<td>50</td>
+<td>RDNA 2 · D · 128 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO W6600M</td>
+<td>8 GDDR6</td>
+<td>90</td>
+<td>RDNA 2 · M · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO W6500M</td>
+<td>4 GDDR6</td>
+<td>35–50</td>
+<td>RDNA 2 · M · 128 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO W6300M</td>
+<td>2 GDDR6</td>
+<td>25</td>
+<td>RDNA 2 · M · 64 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W5700</td>
+<td>8 GDDR6</td>
+<td>205</td>
+<td>RDNA · D · 448 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO W5500</td>
+<td>8 GDDR6</td>
+<td>125</td>
+<td>RDNA · D · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO W5500M</td>
+<td>4 GDDR6</td>
+<td>65–85</td>
+<td>RDNA · M · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO VII</td>
+<td>16 HBM2</td>
+<td>250</td>
+<td>Vega20 · D · 1000 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>服务器</td>
+<td>PRO V710</td>
+<td>28 GDDR6</td>
+<td>158</td>
+<td>RDNA 3 · 服务器 · 448 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>服务器</td>
+<td>PRO V620</td>
+<td>32 GDDR6</td>
+<td>300</td>
+<td>RDNA 2 · 服务器 · 512 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>服务器</td>
+<td>PRO V520</td>
+<td>8 HBM2</td>
+<td>225</td>
+<td>RDNA · 服务器 · 512 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 9100</td>
+<td>16 HBM2</td>
+<td>230</td>
+<td>Vega · D · 484 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 8200</td>
+<td>8 HBM2</td>
+<td>230</td>
+<td>Vega · D · 512 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 7100</td>
+<td>8 GDDR5</td>
+<td>130</td>
+<td>Polaris · D · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 7100 Mobile</td>
+<td>8 GDDR5</td>
+<td>100</td>
+<td>Polaris · M · 160 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 5100</td>
+<td>8 GDDR5</td>
+<td>75</td>
+<td>Polaris · D · 160 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 4100</td>
+<td>4 GDDR5</td>
+<td>50</td>
+<td>Polaris · D · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 4170 Mobile</td>
+<td>4 GDDR5</td>
+<td>60</td>
+<td>Polaris · M · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 4150 Mobile</td>
+<td>4 GDDR5</td>
+<td>45</td>
+<td>Polaris · M · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 4130 Mobile</td>
+<td>4 GDDR5</td>
+<td>—</td>
+<td>Polaris · M · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 3200</td>
+<td>4 GDDR5</td>
+<td>50</td>
+<td>Polaris · D · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 3200 Mobile</td>
+<td>4 GDDR5</td>
+<td>—</td>
+<td>Polaris · M · 64 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 3100</td>
+<td>4 GDDR5</td>
+<td>50</td>
+<td>Polaris · D · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 3100 Mobile</td>
+<td>4 GDDR5</td>
+<td>—</td>
+<td>Polaris · M · 96 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO WX 2100</td>
+<td>2 GDDR5</td>
+<td>35</td>
+<td>Polaris · D · 48 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业移动</td>
+<td>PRO WX 2100 Mobile</td>
+<td>2 GDDR5</td>
+<td>—</td>
+<td>Polaris · M · 48 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO SSG</td>
+<td>16 HBM2</td>
+<td>260</td>
+<td>Vega · D · 484 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>PRO Duo</td>
+<td>32 合计 GDDR5</td>
+<td>250</td>
+<td>Polaris · D · 448 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>Vega Frontier Edition 风冷</td>
+<td>16 HBM2</td>
+<td>300</td>
+<td>Vega · D · 484 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>专业桌面</td>
+<td>Vega Frontier Edition 水冷</td>
+<td>16 HBM2</td>
+<td>375</td>
+<td>Vega · D · 484 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 6000 Blackwell Workstation</td>
+<td>96 GDDR7</td>
+<td>600</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>120,000（跟踪）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 6000 Blackwell Max-Q</td>
+<td>96 GDDR7</td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>108,560（跟踪）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 5500 Blackwell Workstation</td>
+<td>84 GDDR7</td>
+<td>≤600</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 5000 Blackwell 72GB</td>
+<td>72 GDDR7</td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 5000 Blackwell 48GB</td>
+<td>48 GDDR7</td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 4500 Blackwell</td>
+<td>32 GDDR7</td>
+<td>200</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>39,999（较早挂牌）</td>
+<td>4,799.99–5,199（较早快照）</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 4000 Blackwell</td>
+<td>24 GDDR7</td>
+<td>145</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 4000 Blackwell SFF</td>
+<td>24 GDDR7</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX PRO 2000 Blackwell</td>
+<td>16 GDDR7</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 6000 Ada</td>
+<td>48 GDDR6</td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 5000 Ada</td>
+<td>32 GDDR6</td>
+<td>250</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 4500 Ada</td>
+<td>24 GDDR6</td>
+<td>210</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 4000 Ada</td>
+<td>20 GDDR6</td>
+<td>130</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 4000 SFF Ada</td>
+<td>20 GDDR6</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 2000 Ada</td>
+<td>16 GDDR6</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>A800 40GB Active</td>
+<td>40 HBM2</td>
+<td>240</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A6000</td>
+<td>48 GDDR6</td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A5500</td>
+<td>24 GDDR6</td>
+<td>230</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A5000</td>
+<td>24 GDDR6</td>
+<td>230</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A4500</td>
+<td>20 GDDR6</td>
+<td>200</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A4000</td>
+<td>16 GDDR6</td>
+<td>140</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A2000 12GB</td>
+<td>12 GDDR6</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A2000 6GB</td>
+<td>6 GDDR6</td>
+<td>70</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A1000</td>
+<td>8 GDDR6</td>
+<td>50</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX A400</td>
+<td>4 GDDR6</td>
+<td>50</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>T1000 8GB</td>
+<td>8 GDDR6</td>
+<td>50</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>T1000 4GB</td>
+<td>4 GDDR6</td>
+<td>50</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>T600</td>
+<td>4 GDDR6</td>
+<td>40</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>T400 4GB</td>
+<td>4 GDDR6</td>
+<td>30</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>T400 2GB</td>
+<td>2 GDDR6</td>
+<td>30</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业桌面</td>
+<td>RTX 2000E Ada</td>
+<td>16 GDDR6</td>
+<td>50</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5090</td>
+<td>24 GDDR7</td>
+<td>95–150</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5080</td>
+<td>16 GDDR7</td>
+<td>80–150</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5070 Ti</td>
+<td>12 GDDR7</td>
+<td>60–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5070 12GB</td>
+<td>12 GDDR7</td>
+<td>50–100（目录列级）</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5070 8GB</td>
+<td>8 GDDR7</td>
+<td>50–100（目录列级）</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5060</td>
+<td>8 GDDR7</td>
+<td>45–100</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 5050</td>
+<td>8 GDDR7</td>
+<td>35–100</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 4090</td>
+<td>16 GDDR6</td>
+<td>80–150</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 4080</td>
+<td>12 GDDR6</td>
+<td>60–150</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 4070</td>
+<td>8 GDDR6</td>
+<td>35–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 4060</td>
+<td>8 GDDR6</td>
+<td>35–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>消费移动</td>
+<td>RTX 4050</td>
+<td>6 GDDR6</td>
+<td>35–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 5000 Blackwell</td>
+<td>24 GDDR7</td>
+<td>95–175</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 4000 Blackwell</td>
+<td>16 GDDR7</td>
+<td>80–175</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 3000 Blackwell</td>
+<td>12 GDDR7</td>
+<td>60–140</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 2000 Blackwell</td>
+<td>8 GDDR7</td>
+<td>45–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 1000 Blackwell</td>
+<td>8 GDDR7</td>
+<td>35–115</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX PRO 500 Blackwell</td>
+<td>6 GDDR7</td>
+<td>35–75</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 5000 Ada</td>
+<td>16 GDDR6</td>
+<td>80–175</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 4000 Ada</td>
+<td>12 GDDR6</td>
+<td>60–175</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 3500 Ada</td>
+<td>12 GDDR6</td>
+<td>60–140</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 3000 Ada</td>
+<td>8 GDDR6</td>
+<td>35–140</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 2000 Ada</td>
+<td>8 GDDR6</td>
+<td>35–140</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 1000 Ada</td>
+<td>6 GDDR6</td>
+<td>35–140</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>专业移动</td>
+<td>RTX 500 Ada</td>
+<td>4 GDDR6</td>
+<td>35–60</td>
+<td>Laptop</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI455X</td>
+<td>432 HBM4</td>
+<td>—</td>
+<td>CDNA 5 · 23.3 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI450X</td>
+<td>288 HBM4</td>
+<td>—</td>
+<td>CDNA 5 · 23.3 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI355X</td>
+<td>288 HBM3E</td>
+<td>1400 TBP</td>
+<td>CDNA 4 · 8 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI350X</td>
+<td>288 HBM3E</td>
+<td>1000 TBP</td>
+<td>CDNA 4 · 8 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI350P</td>
+<td>144 HBM3E</td>
+<td>450／600 TBP</td>
+<td>CDNA 4 · 4 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI325X</td>
+<td>256 HBM3E</td>
+<td>1000 峰值</td>
+<td>CDNA 3 · 6 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI300X</td>
+<td>192 HBM3</td>
+<td>750 峰值</td>
+<td>CDNA 3 · 5.3 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI300A</td>
+<td>128 HBM3</td>
+<td>550／760 峰值</td>
+<td>CDNA 3 APU · 5.3 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI250X</td>
+<td>128 HBM2e</td>
+<td>500／560 峰值</td>
+<td>CDNA 2 · 3.2 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI250</td>
+<td>128 HBM2e</td>
+<td>500／560 峰值</td>
+<td>CDNA 2 · 3.2 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI210</td>
+<td>64 HBM2e</td>
+<td>—</td>
+<td>CDNA 2 · 1.6 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI100</td>
+<td>32 HBM2</td>
+<td>300 峰值</td>
+<td>CDNA · 1.2 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI60</td>
+<td>32 HBM2</td>
+<td>300 峰值</td>
+<td>Vega20 · 1 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI50 32GB</td>
+<td>32 HBM2</td>
+<td>300 峰值</td>
+<td>Vega20 · 1 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI50 16GB</td>
+<td>16 HBM2</td>
+<td>300 峰值</td>
+<td>Vega20 · 1 TB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI25</td>
+<td>16 HBM2</td>
+<td>300 峰值</td>
+<td>Vega · 484 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI8</td>
+<td>4 HBM</td>
+<td>175 峰值</td>
+<td>GCN · 512 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>数据中心</td>
+<td>MI6</td>
+<td>16 GDDR5</td>
+<td>150 峰值</td>
+<td>Polaris · 224 GB/s</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>Rubin GPU</td>
+<td>最高 288 HBM4</td>
+<td>—</td>
+<td>Rubin · Rubin NVL8／NVL72 等，按系统</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>B300</td>
+<td>270 HBM3E（SXM）</td>
+<td>—</td>
+<td>Blackwell Ultra · HGX／DGX B300</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>GB300</td>
+<td>按 GB300 模块或机柜配置</td>
+<td>—</td>
+<td>Grace Blackwell Ultra · GB300 NVL72</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>B200</td>
+<td>180 HBM3E（SXM）</td>
+<td>—</td>
+<td>Blackwell · HGX／DGX B200</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>GB200</td>
+<td>按 GB200 模块或机柜配置</td>
+<td>—</td>
+<td>Grace Blackwell · GB200 NVL72</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>B100</td>
+<td>—</td>
+<td>—</td>
+<td>Blackwell · 发布平台，有效供应另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H200 SXM</td>
+<td>141 HBM3E</td>
+<td>—</td>
+<td>Hopper · HGX／DGX</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H200 NVL</td>
+<td>141 HBM3E</td>
+<td>—</td>
+<td>Hopper · PCIe NVL</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H100 SXM</td>
+<td>80 HBM3</td>
+<td>—</td>
+<td>Hopper · HGX／DGX</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H100 PCIe</td>
+<td>80 HBM2e</td>
+<td>—</td>
+<td>Hopper · PCIe</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H100 NVL</td>
+<td>94 HBM3／GPU</td>
+<td>—</td>
+<td>Hopper · 按 NVL 配置</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>GH200</td>
+<td>按具体 HBM3／HBM3E 版本</td>
+<td>—</td>
+<td>Grace Hopper · CPU＋GPU 超级芯片</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H800 PCIe</td>
+<td>—</td>
+<td>—</td>
+<td>Hopper · 地区版本，供货另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H800 NVL</td>
+<td>—</td>
+<td>—</td>
+<td>Hopper · 地区版本，供货另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>H20</td>
+<td>—</td>
+<td>—</td>
+<td>Hopper · 地区版本，供货另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>RTX PRO 6000 Blackwell Server</td>
+<td>96 GDDR7</td>
+<td>—</td>
+<td>Blackwell · 机架版</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>RTX PRO 4500 Blackwell Server</td>
+<td>32 GDDR7</td>
+<td>—</td>
+<td>Blackwell · 机架版</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>RTX PRO 6000D</td>
+<td>84 GDDR7（渠道样本）</td>
+<td>—</td>
+<td>Blackwell · 地区版本，具体料号和授权渠道另核</td>
+<td>—</td>
+<td>—</td>
+<td>68,599（工包）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>L40S</td>
+<td>48 GDDR6</td>
+<td>—</td>
+<td>Ada · AI／可视化</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>L40</td>
+<td>48 GDDR6</td>
+<td>—</td>
+<td>Ada · 可视化／虚拟化</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>L20</td>
+<td>—</td>
+<td>—</td>
+<td>Ada · 区域渠道，料号另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>L4</td>
+<td>24 GDDR6</td>
+<td>—</td>
+<td>Ada · 低功耗媒体和推理</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>L2</td>
+<td>—</td>
+<td>—</td>
+<td>Ada · 数据中心驱动列名</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>AX800</td>
+<td>—</td>
+<td>—</td>
+<td>Ampere · 数据中心驱动列名</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A800</td>
+<td>—</td>
+<td>—</td>
+<td>Ampere · 与 40GB Active 区分</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A100 80GB</td>
+<td>80 HBM2e</td>
+<td>—</td>
+<td>Ampere · SXM／PCIe 另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A100 40GB</td>
+<td>40 HBM2</td>
+<td>—</td>
+<td>Ampere · SXM／PCIe 另核</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A40</td>
+<td>48 GDDR6</td>
+<td>—</td>
+<td>Ampere · 虚拟化／渲染</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A30</td>
+<td>24 HBM2</td>
+<td>—</td>
+<td>Ampere · 训练／推理</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A16</td>
+<td>64 合计／每 GPU 16 GDDR6</td>
+<td>—</td>
+<td>Ampere · 四 GPU 虚拟化板</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A10</td>
+<td>24 GDDR6</td>
+<td>—</td>
+<td>Ampere · 虚拟化／媒体</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>A2</td>
+<td>16 GDDR6</td>
+<td>—</td>
+<td>Ampere · 低功耗推理</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>T4</td>
+<td>16 GDDR6</td>
+<td>—</td>
+<td>Turing · 存量推理</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>V100</td>
+<td>16／32 HBM2</td>
+<td>—</td>
+<td>Volta · 历史</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>P100</td>
+<td>12／16 HBM2</td>
+<td>—</td>
+<td>Pascal · 历史</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>P40</td>
+<td>24 GDDR5</td>
+<td>—</td>
+<td>Pascal · 历史</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>数据中心</td>
+<td>P4</td>
+<td>8 GDDR5</td>
+<td>—</td>
+<td>Pascal · 历史</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+</article></div></main>
+</body>
+</html>

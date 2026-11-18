@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>盈通 Radeon AI PRO R9700 对标调研 · DreamSoul 研发</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<a class="skip" href="#content">跳到正文</a>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true"></span>DreamSoul <span>研发 / 研究</span></a>
+    <nav aria-label="主要页面"><a href="index.html">概览与型号</a><a href="general.html">通用调研</a><a href="r9700.html" aria-current="page">R9700 专项</a></nav>
+  </div>
+</header>
+<main class="wrap report" id="content"><header class="report-title"><a class="back" href="index.html">← 概览与型号</a><h1>盈通 Radeon AI PRO R9700 对标调研</h1></header><div class="report-layout"><aside><nav aria-label="章节"><strong>章节</strong><a class="level-1" href="#section-1">一、总览</a><a class="level-1" href="#section-2">二、使用场景与目标客群</a><a class="level-1" href="#section-3">三、本调研综合评分</a><a class="level-1" href="#section-4">四、公开实测与跑分</a><a class="level-2" href="#section-5">（一）Qwen 35B 量化推理</a><a class="level-2" href="#section-6">（二）7B 推理、图形与渲染</a><a class="level-2" href="#section-7">（三）训练与微调实测</a><a class="level-1" href="#section-8">五、精度与测试批注</a><a class="level-1" href="#section-9">六、计算、显存与价格总表</a></nav></aside><article class="prose"><h2 id="section-1">一、总览</h2>
+<p><strong>在同一项 3DMark 图形测试中，R9700 得了 7,008 分，RTX 5070 Ti 得了 6,967 分，两张卡相差不到 1%。32 GB 的价值是让 35B Q4 权重全进显存，同时给长文档的上下文缓存和运行留空间。</strong> 一份 35B Q4 权重约 19.7 GiB，16 GB 卡通常要卸载到系统内存，或换更低位宽的量化。24 GB 卡已有全显存样本，R9700 再多 8 GB 名义容量，可留给上下文或并发。 <a href="https://benchmarks.ul.com/hardware/gpu/AMD%20Radeon%20AI%20PRO%20R9700%2Breview">UL 图形横评</a> · <a href="https://touch-sp.hatenablog.com/entry/2026/02/27/004916">35B Q4 权重及实测</a> · <a href="https://huggingface.co/docs/transformers/main/kv_cache">KV 缓存说明</a></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU</strong></th>
+<th><strong>显存 GB · 显存带宽 GB/s · 功耗 W</strong></th>
+<th><strong>FP32／FP8／BF16 TFLOPS</strong></th>
+<th><strong>图形分／4K FPS</strong></th>
+<th style="text-align:right"><strong>7B Q4 生成 token/s</strong></th>
+<th><strong>35B Q4 生成 token/s · 驻留</strong></th>
+<th><strong>训练与微调</strong></th>
+<th><strong>大陆样本 元</strong></th>
+<th style="text-align:right"><strong>综合分 /100</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AMD 盈通 R9700（基准）</strong></td>
+<td><strong>32 GDDR6 · 640 · 300</strong></td>
+<td>47.8／383¹／—</td>
+<td><strong>7,008 基准</strong>／—</td>
+<td style="text-align:right"><strong>152.70</strong></td>
+<td><strong>153.4 · 全显存</strong></td>
+<td>ROCm，4B LoRA 有样本</td>
+<td>17,899</td>
+<td style="text-align:right"><strong>72</strong></td>
+</tr>
+<tr>
+<td>AMD R9600D</td>
+<td>32 GDDR6 · 640 · 150</td>
+<td>24.8／199¹／—</td>
+<td>—／—</td>
+<td style="text-align:right">—</td>
+<td>容量同档，待实测</td>
+<td>Linux ROCm</td>
+<td>待询</td>
+<td style="text-align:right"><strong>52–86</strong></td>
+</tr>
+<tr>
+<td>AMD RX 9070 XT</td>
+<td>16 GDDR6 · 640 · 304</td>
+<td>48.7／389¹／—</td>
+<td>7,273 ↑3.8%／65.8</td>
+<td style="text-align:right">142.00</td>
+<td>50.64 · CPU 混合</td>
+<td>ROCm，16 GB 需控制批量</td>
+<td>5,299–6,199</td>
+<td style="text-align:right"><strong>56</strong></td>
+</tr>
+<tr>
+<td>AMD RX 7900 XTX</td>
+<td>24 GDDR6 · 960 · 355</td>
+<td>61.4／无原生 FP8／—</td>
+<td>6,866 ↓2.0%／70.6</td>
+<td style="text-align:right">190.92</td>
+<td>104.79 · 全显存</td>
+<td>ROCm</td>
+<td>7,899</td>
+<td style="text-align:right"><strong>75</strong></td>
+</tr>
+<tr>
+<td><strong>NVIDIA RTX 5070 Ti</strong></td>
+<td>16 GDDR7 · 896 · 300</td>
+<td>43.9／175.8／87.9</td>
+<td><strong>6,967 ↓0.6%</strong>／68.6</td>
+<td style="text-align:right"><strong>176.18</strong></td>
+<td>约 50 · WebUI，配置未详</td>
+<td>CUDA，16 GB 需控制批量</td>
+<td>7,549–10,399</td>
+<td style="text-align:right"><strong>61–64</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5080</td>
+<td>16 GDDR7 · 960 · 360</td>
+<td>56.3／225.1／112.6</td>
+<td>8,938 ↑27.5%／77.4</td>
+<td style="text-align:right">192.17</td>
+<td>约 50 · 专家卸载</td>
+<td>CUDA，16 GB 需控制批量</td>
+<td>8,999–15,399</td>
+<td style="text-align:right"><strong>60–63</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090</td>
+<td>24 GDDR6X · 1,008 · 450</td>
+<td>82.6／330.3／165.2</td>
+<td>9,225 ↑31.6%／89.1</td>
+<td style="text-align:right">190.10</td>
+<td>147.73 · 全显存</td>
+<td>CUDA，4B LoRA 有样本</td>
+<td>23,920 涡轮均价</td>
+<td style="text-align:right"><strong>74</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5090</td>
+<td>32 GDDR7 · 1,792 · 575</td>
+<td>104.8／419.0／209.5</td>
+<td>14,636 ↑108.8%／110.8</td>
+<td style="text-align:right">273.68</td>
+<td>194.0 · 早期 Q4 全显存</td>
+<td>CUDA</td>
+<td>43,785 涡轮均价</td>
+<td style="text-align:right"><strong>82</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 4500 Blackwell</td>
+<td>32 GDDR7 · 896 · 200</td>
+<td>51／—／—</td>
+<td>—／—</td>
+<td style="text-align:right">168.90（CUDA）</td>
+<td>—</td>
+<td>CUDA</td>
+<td>39,999 较早挂牌</td>
+<td style="text-align:right"><strong>74</strong>（较早价）</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>7B 两张卡都放得下，5070 Ti 的公开同协议样本生成快约 15%。</strong> 到 <strong>35B Q4</strong>，4090 和 7900 XTX 是 24 GB 全显存参照，R9600D 是 AMD 同容量低功耗参照，RTX PRO 4500 是 NVIDIA 同容量工作站参照。35B 一列使用各卡实际配置。5090 的 194.0 来自早期配对，当时 R9700 为 127.4。权重配方和后端见第四节。相同模型、量化和输入下，显存容量本身主要影响可运行的模型与上下文。 <a href="https://github.com/ggml-org/llama.cpp/discussions/10879">7B Vulkan 跑分</a> · <a href="https://github.com/ggml-org/llama.cpp/discussions/15013">7B CUDA 跑分</a> · <a href="https://github.com/ggml-org/llama.cpp/discussions/19890">35B 配对记录</a></p>
+<p>如果考虑 R9600D，AMD 参考规格为 150 W、被动散热，整机需提供匹配风道。它的实测吞吐和含票供货价待核。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9600d.html">AMD R9600D 产品规格</a></p>
+<p><strong>表里的显存带宽是 GPU 芯片与板载显存之间的理论读写上限。</strong> R9700 的 640 GB/s 比 5070 Ti 的 896 GB/s 低约 29%，比 5080 的 960 GB/s 低约 33%。<strong>PCIe 是显卡和主机之间的通道。</strong> 权重和 KV 缓存留在显存时，PCIe 对单卡持续生成通常影响较小。加载模型或频繁和系统内存交换数据时，PCIe 才更相关。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">AMD R9700 规格</a> · <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf">NVIDIA 显存规格</a> · <a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#data-transfer-between-host-and-device">显卡与主机数据传输</a></p>
+<p>图形分取 Steel Nomad DX12，百分比相对 R9700。4K 帧率取同一组原生光栅测试。FP8 和 BF16 为稠密矩阵峰值，NVIDIA 按 FP32 累加，¹ 为 AMD 产品页所列 FP8 峰值。— 表示缺对应数据。原版 35B BF16 检查点约 67 GiB，需更大显存。 <a href="https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html">原生 4K 横评</a> · <a href="https://www.amd.com/en/products/specifications/professional-graphics.html">AMD 专业卡规格</a> · <a href="https://www.amd.com/en/products/specifications/graphics.html">AMD 消费卡规格</a> · <a href="https://rocm.docs.amd.com/_/downloads/rocWMMA/en/latest/pdf/">AMD FP8 支持矩阵</a> · <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/model.safetensors.index.json">Qwen 权重索引</a></p>
+<h2 id="section-2">二、使用场景与目标客群</h2>
+<p><strong>办公 Agent 和本地 AI 生图是 R9700 的两个主要用途。</strong> 个人和团队都可以在单卡上运行 35B Q4 办公 Agent。生图时，32 GB 显存能容纳更大的模型，并给分辨率、批量和工作流留出空间。评分综合考虑这些用途能否用上 32 GB、公开实测表现和软件适配成本。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>使用场景</strong></th>
+<th><strong>潜在客群</strong></th>
+<th style="text-align:right"><strong>适配度 /5</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>办公 Agent</td>
+<td>个人办公用户、业务团队</td>
+<td style="text-align:right"><strong>5</strong></td>
+</tr>
+<tr>
+<td>本地 AI 生图</td>
+<td>个人创作者、设计团队</td>
+<td style="text-align:right"><strong>4</strong></td>
+</tr>
+<tr>
+<td>LoRA／QLoRA 微调</td>
+<td>AI 开发者、研发组、实验室</td>
+<td style="text-align:right"><strong>4</strong></td>
+</tr>
+<tr>
+<td>3D 渲染</td>
+<td>设计师、技术美术</td>
+<td style="text-align:right"><strong>3</strong></td>
+</tr>
+<tr>
+<td>仅轻量问答或游戏</td>
+<td>轻量使用者、玩家</td>
+<td style="text-align:right"><strong>2</strong></td>
+</tr>
+<tr>
+<td>单卡 35B BF16、全量训练</td>
+<td>大模型研发组、服务团队</td>
+<td style="text-align:right"><strong>1</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>办公 Agent（5/5）</strong>。个人在自己的电脑上也可以运行 35B Q4 模型，让 Agent 读取多份报价、核对价格和交付条件、更新对比表，并为每条数据附上原文出处。R9700 已有 Qwen 35B Q4 全显存运行的公开样本。32 GB 让约 20 GiB 的量化权重上卡后仍能给上下文缓存和运行开销留空间。7–8B 可以用于简单任务，模型大小按实际任务的结果选择。验收时看任务完成率、来源是否准确、交付文件是否可用和全程耗时。有离线要求时，验证断网能否完成全流程。 <a href="https://github.com/ggml-org/llama.cpp/discussions/21043">R9700 的 35B Q4 实测</a></p>
+<p>Back2Gaming 在同一台架上用 llama.cpp 模拟 Agent 的多轮长输入、短回复，配置 32K 上下文上限。用 27B UD-IQ4_XS 时，R9700、RTX 5070 Ti、RX 9070 XT 分别生成 <strong>30.6、28.3、26.4 token/s</strong>。换成 Qwen3.5-9B Q4_K_M，RTX 5070 Ti 为 <strong>117.1 token/s</strong>，R9700 为 <strong>79.8 token/s</strong>。这是模型回复速度样本。办公文件准确率和端到端耗时需在交付镜像上跑真实任务。 <a href="https://www.back2gaming.com/review/amd-radeon-ai-pro-r9700-32gb/">三卡 Agent 模拟实测</a></p>
+<p><strong>本地 AI 生图（4/5）</strong>。适合个人创作者和设计团队批量做商品图、封面和概念图。公开 SDXL 1024×1024 连续出图测试中，R9700 为 <strong>9.03 张/分钟</strong>，RTX 5070 Ti 为 <strong>9.84</strong>，RX 9070 XT 为 <strong>8.22</strong>。32 GB 的优势在更重的流程里更明显。AMD 的指南列出的 FLUX.1 Schnell 去噪模型一项约占 23.8 GB 显存，16 GB 卡跑这份配置时需要量化或卸载。给 4 分是因为已有实测支持生图，升级到更大模型或多节点流程时也有容量优势，但部署仍取决于实际使用的驱动、运行后端和自定义节点。按目标工作流实测出图时间、峰值显存和批量运行稳定性。 <a href="https://www.back2gaming.com/review/amd-radeon-ai-pro-r9700-32gb/#image-generation">SDXL 三卡实测</a> · <a href="https://www.amd.com/content/dam/amd/en/documents/products/graphics/workstation/radeon-ai-pro-rocm-pytorch-guide.pdf">AMD 显存用量指南</a> · <a href="https://rocm.blogs.amd.com/artificial-intelligence/comfyui-radeon-9000/README.html">AMD ComfyUI 配置与测试</a></p>
+<p>做 LoRA 或 QLoRA 时，32 GB 显存可以给训练中间结果和批量留余量。先核对 Linux ROCm 环境，在 Windows 上按支持矩阵核对 WSL。固定模型、精度和训练软件版本，持续试跑后再验收。 <a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityrad/wsl/wsl_compatibility.html">AMD WSL 支持矩阵</a></p>
+<p><strong>3D 渲染（3/5）</strong>。32 GB 能容纳更大的场景和贴图，渲染速度取决于软件和后端。公开 Blender 样本中 RTX 5070 Ti 更快。 <a href="https://www.pugetsystems.com/labs/articles/amd-gpu-rendering-performance-is-radeon-a-viable-alternative/">Puget 应用渲染实测</a></p>
+<p>只做短问答或玩游戏时，通常有成本更低的选项，按实际响应速度或目标游戏帧率选卡。</p>
+<p>原版 35B BF16 仅权重就约 67 GiB。要求全驻留或做全量训练时，按权重、运行开销或训练状态核算，并评估更大显存或多卡方案。 <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/model.safetensors.index.json">Qwen 权重索引</a></p>
+<p><strong>工作站预装</strong>是整机厂、集成商面向企业采购方或个人交付办公 Agent、生图和微调等用途的方式。整机验收用随机器交付的镜像跑实际办公任务和生图流程，并检查重装恢复、满载温度和噪音，明确售后范围。 <a href="general.html#validation">预装验收口径</a></p>
+<h2 id="section-3">三、本调研综合评分</h2>
+<p>以单卡工作站运行 <strong>35B MoE Q4、本地 7B 交互和小规模 LoRA／QLoRA</strong> 为目标，按中国大陆单卡样本价评分。各项权重和满分阈值按这三项用途设定，分数满分 100。办公 Agent 和生图按第二节的使用场景适配度与任务实测判断。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU</strong></th>
+<th style="text-align:right"><strong>35B 驻留 /25</strong></th>
+<th style="text-align:right"><strong>7B 速度 /20</strong></th>
+<th style="text-align:right"><strong>微调部署 /15</strong></th>
+<th style="text-align:right"><strong>硬件 /25</strong></th>
+<th style="text-align:right"><strong>价格 /15</strong></th>
+<th style="text-align:right"><strong>综合 /100</strong></th>
+<th><strong>样本条件</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AMD R9700</strong></td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right"><strong>72</strong></td>
+<td>全显存基准，微调走 ROCm</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">19</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right"><strong>74</strong></td>
+<td>24 GB 余量较小，价格为涡轮均价</td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 4500 Blackwell</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">18</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right"><strong>74</strong></td>
+<td>7B 取 CUDA，价格为较早挂牌</td>
+</tr>
+<tr>
+<td>AMD R9600D</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">0–20</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">1–15</td>
+<td style="text-align:right"><strong>52–86</strong></td>
+<td>7B 同协议与报价待补</td>
+</tr>
+<tr>
+<td>AMD RX 9070 XT</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right"><strong>56</strong></td>
+<td>Q4 CPU 混合，16 GB</td>
+</tr>
+<tr>
+<td>AMD RX 7900 XTX</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">12</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right"><strong>75</strong></td>
+<td>24 GB 低价，35B Q4_0 实测</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5070 Ti</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">12–15</td>
+<td style="text-align:right"><strong>61–64</strong></td>
+<td>16 GB，价格跨两档</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5080</td>
+<td style="text-align:right">8</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">11</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">9–12</td>
+<td style="text-align:right"><strong>60–63</strong></td>
+<td>16 GB，价格跨两档</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5090</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">21</td>
+<td style="text-align:right">1</td>
+<td style="text-align:right"><strong>82</strong></td>
+<td>高吞吐，价格为涡轮均价</td>
+</tr>
+<tr>
+<td>AMD PRO W7900</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">0–20</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">1–15</td>
+<td style="text-align:right"><strong>56–90</strong></td>
+<td>7B 同协议与现价待补</td>
+</tr>
+<tr>
+<td>AMD PRO W7800 48 GB</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">0–20</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">16</td>
+<td style="text-align:right">1–15</td>
+<td style="text-align:right"><strong>55–89</strong></td>
+<td>7B 同协议与现价待补</td>
+</tr>
+<tr>
+<td>NVIDIA RTX PRO 4000 Blackwell</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">10</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">14</td>
+<td style="text-align:right">9</td>
+<td style="text-align:right"><strong>66</strong></td>
+<td>7B 取 CUDA，价格为挂牌</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5000 Ada</td>
+<td style="text-align:right">25</td>
+<td style="text-align:right">0–20</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">15</td>
+<td style="text-align:right">1–15</td>
+<td style="text-align:right"><strong>56–90</strong></td>
+<td>7B 同协议与现价待补</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090 D</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">17</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">18</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right"><strong>74</strong></td>
+<td>7B 取 CUDA</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5090 D v2</td>
+<td style="text-align:right">20</td>
+<td style="text-align:right">0–20</td>
+<td style="text-align:right">13</td>
+<td style="text-align:right">21</td>
+<td style="text-align:right">6</td>
+<td style="text-align:right"><strong>60–80</strong></td>
+<td>7B 同协议待测</td>
+</tr>
+</tbody>
+</table></div>
+<p>RTX 5090 D v2 的规格与价格等项目合计 <strong>60 分</strong>。7B 速度缺同协议实测，留 0–20 分，总分区间为 <strong>60–80 分</strong>。RTX 5090 的各项输入齐备，按本表口径为 <strong>82 分</strong>。两者在本表的 35B 驻留分差来自 24 GB 与 32 GB 的容量余量。</p>
+<ul>
+<li><strong>35B 驻留 25 分</strong>。针对本报告约 18–21 GiB 的 Q4 权重样本，按名义显存 ≥32 GB／24 GB／16 GB 给 25／20／8 分。评估权重驻留及运行余量。未跑同模型的型号按容量估计，交付需验实际 KV、上下文和并发</li>
+<li><strong>7B 速度 20 分</strong>。Llama 2 7B Q4_0、FA 开、tg128 最高 12 分、pp512 最高 8 分，各按实测达到 250 和 12,000 token/s 的比例计分，封顶后相加取整。优先取 Vulkan，明确标注的型号用同测试阶段 CUDA 样本。此分反映对应运行路径的观测速度</li>
+<li><strong>微调部署 15 分</strong>。16／24／≥32 GB 分别给 6／8／10 分，表示固定小模型 LoRA 与 QLoRA 的显存余量。后端路径在原生 Windows 和 Linux 均可核实给 5 分，以 Linux 为可核实的训练基线给 3 分。本次 NVIDIA 按 PyTorch CUDA 路径计，AMD 按 Linux ROCm 路径计，适用的 WSL 环境仍按版本复核。训练吞吐见第四节。 <a href="https://pytorch.org/get-started/locally/">PyTorch 安装与平台</a> · <a href="https://developer.nvidia.com/cuda/gpus">NVIDIA GPU 支持</a> · <a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityrad/native_linux/native_linux_compatibility.html">AMD Linux 支持矩阵</a> · <a href="https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityrad/wsl/wsl_compatibility.html">AMD WSL 支持矩阵</a></li>
+<li><strong>硬件 25 分</strong>。FP32 向量峰值按达到 100 TFLOPS 的比例给至多 10 分，显存带宽按达到 1,200 GB/s 的比例给至多 10 分。参考功耗按 ≤200／≤300／≤400／≤500／&gt;500 W 给 5／4／3／2／1 分，三项相加取整。FP16、BF16 峰值的累加和稀疏口径需另行对齐，本项采用可核的 FP32 规格计算</li>
+<li><strong>价格 15 分</strong>。按 ≤8,000／≤12,000／≤18,000／≤25,000／≤40,000／&gt;40,000 元给 15／12／9／6／3／1 分。样本价跨档给区间。较早挂牌只用于该价格情形，批发均价和挂牌的条件见总表</li>
+</ul>
+<p><strong>复算</strong>。R9700 为 25＋11＋13＋14＋9＝<strong>72</strong>。缺测时给该项可取范围，累计成总分区间。区间重叠的型号需先补测或询价。若只跑 7B Q4，去掉 35B 驻留项后 R9700 为 47/75，RTX 5070 Ti 为 53–56/75，预算判断随用途变化。显存和软件兼容属于硬条件时，先做可行性筛选。</p>
+<h2 id="section-4">四、公开实测与跑分</h2>
+<h3 id="section-5">（一）Qwen 35B 量化推理</h3>
+<p>速度随权重文件、KV 缓存精度、后端、上下文和 CPU 卸载设置变化。127.4／194.0 token/s 来自 2026年2月的早期配对样本，Unsloth 后续修订了同名 Q4 配方。 <a href="https://github.com/ggml-org/llama.cpp/discussions/19890">配对原始记录</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF/discussions/5">Unsloth 配方修订</a></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU</strong></th>
+<th style="text-align:right"><strong>显存 GB</strong></th>
+<th><strong>模型与量化</strong></th>
+<th><strong>后端与权重驻留</strong></th>
+<th><strong>生成 token/s</strong></th>
+<th><strong>预填充 token/s</strong></th>
+<th><strong>公开实测</strong></th>
+<th style="text-align:right"><strong>本调研驻留分 /25</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AMD R9700（基准）</strong></td>
+<td style="text-align:right"><strong>32</strong></td>
+<td>3.5 · UD-Q4_K_XL（早期）</td>
+<td>Vulkan，全 GPU</td>
+<td><strong>127.4</strong>（平均）</td>
+<td><strong>2,713</strong>（512）／<strong>1,877</strong>（32K）</td>
+<td><a href="https://github.com/ggml-org/llama.cpp/discussions/19890#results-token-generation-tg-ts">llama.cpp 配对测试</a></td>
+<td style="text-align:right">25</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5090</td>
+<td style="text-align:right">32</td>
+<td>3.5 · UD-Q4_K_XL（早期）</td>
+<td>CUDA，全 GPU</td>
+<td><strong>194.0（↑52.3%）</strong>（平均）</td>
+<td>7,026（512，↑159.0%）／6,461（32K，↑244.2%）</td>
+<td><a href="https://github.com/ggml-org/llama.cpp/discussions/19890#results-prompt-processing-pp-ts">同一配对测试</a></td>
+<td style="text-align:right">25</td>
+</tr>
+<tr>
+<td>AMD R9700</td>
+<td style="text-align:right">32</td>
+<td>3.5 · UD-Q4_K_XL</td>
+<td>Linux Vulkan/RADV，全 GPU</td>
+<td><strong>153.4</strong>（tg128）</td>
+<td>3,314（512）／3,131（8K）</td>
+<td><a href="https://github.com/ggml-org/llama.cpp/discussions/21043">独立 R9700 实测</a></td>
+<td style="text-align:right">25</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090</td>
+<td style="text-align:right">24</td>
+<td>3.5 · Q4_K_M</td>
+<td>CUDA，全 GPU</td>
+<td><strong>147.73</strong>（tg128）</td>
+<td>4,995.94（512）</td>
+<td><a href="https://touch-sp.hatenablog.com/entry/2026/02/27/004916">llama-bench 原始输出</a></td>
+<td style="text-align:right">20</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5080</td>
+<td style="text-align:right">16</td>
+<td>3.5 · UD-Q4_K_XL</td>
+<td>CUDA，部分专家留在系统内存</td>
+<td><strong>约 50</strong></td>
+<td>—</td>
+<td><a href="https://github.com/gaztrabisme/llm-server#performance">llm-server S012</a></td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5080</td>
+<td style="text-align:right">16</td>
+<td>3.5 · Q3_K_S</td>
+<td>CUDA，权重全 GPU，KV 为 IQ4_NL</td>
+<td><strong>109／119</strong>（64K／128K 配置）</td>
+<td>—</td>
+<td><a href="https://github.com/YashwanthMY15/Qwen-3.5-16G-Vram-Local/blob/main/DISCOVERY.md#full-context-sweep-data">Q3 显存与上下文测试</a></td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5070 Ti</td>
+<td style="text-align:right">16</td>
+<td>3.5 · Q4_K_M</td>
+<td>llama.cpp，仅 12 层上 GPU</td>
+<td><strong>81.4</strong>（5 并发测试）</td>
+<td>444.8（5 并发测试）</td>
+<td><a href="https://www.llm-benchmark.de/benchmark/run-20260729-060803-21409a?field=gpu&amp;lang=en">LLM Benchmark 原始记录</a></td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5070 Ti</td>
+<td style="text-align:right">16</td>
+<td>3.5 · Q4_K_M</td>
+<td>llama.cpp WebUI，配置披露有限</td>
+<td><strong>约 50</strong></td>
+<td>—</td>
+<td><a href="https://www.reddit.com/r/LocalLLaMA/comments/1ro6i1w/5060_ti5070_ti_for_moe_models_worth_it/">LocalLLaMA 用户报告</a></td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>AMD RX 9070 XT</td>
+<td style="text-align:right">16</td>
+<td>3.5 · Q4_K</td>
+<td>Vulkan，CPU/GPU 混合</td>
+<td><strong>50.64</strong>（tg128）</td>
+<td>548.78（512）</td>
+<td><a href="https://github.com/Maxritz/LLAMA-DX#large-models-exceed-vram-need--fitt-auto-fit">LLAMA-DX 实验</a></td>
+<td style="text-align:right">8</td>
+</tr>
+<tr>
+<td>AMD RX 7900 XTX</td>
+<td style="text-align:right">24</td>
+<td>3.5 · Q4_0 混合配方</td>
+<td>Vulkan，全 GPU</td>
+<td><strong>104.79</strong>（tg128）</td>
+<td>2,104.92（512）</td>
+<td><a href="https://huggingface.co/ubergarm/Qwen3.5-35B-A3B-GGUF/discussions/1">llama-bench 原始记录</a></td>
+<td style="text-align:right">20</td>
+</tr>
+<tr>
+<td><strong>AMD R9700（卸载对照）</strong></td>
+<td style="text-align:right"><strong>32</strong></td>
+<td>3.6 · UD-Q4_K_XL</td>
+<td>Vulkan，20／40 层专家留在 CPU</td>
+<td><strong>46.7／29.7</strong>（tg64）</td>
+<td>—</td>
+<td><a href="https://github.com/ggml-org/llama.cpp/discussions/31811#prototype-results">llama.cpp 同机卸载测试</a></td>
+<td style="text-align:right">25</td>
+</tr>
+<tr>
+<td>NVIDIA RTX 5080</td>
+<td style="text-align:right">16</td>
+<td>3.6 · UD-Q4_K_XL</td>
+<td>Vulkan，20／40 层专家留在 CPU</td>
+<td><strong>51.8（↑10.9%）／32.5（↑9.4%）</strong>（tg64）</td>
+<td>—</td>
+<td><a href="https://github.com/ggml-org/llama.cpp/discussions/31811#prototype-results">同机卸载测试</a></td>
+<td style="text-align:right">8</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="section-6">（二）7B 推理、图形与渲染</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>型号</strong></th>
+<th style="text-align:right"><strong>Llama 2 7B 生成 token/s</strong></th>
+<th style="text-align:right"><strong>Llama 2 7B 预填充 token/s</strong></th>
+<th style="text-align:right"><strong>Steel Nomad 图形分</strong></th>
+<th style="text-align:right"><strong>Blender 分数</strong></th>
+<th style="text-align:right"><strong>Linux vLLM 综合相对值</strong></th>
+<th style="text-align:right"><strong>本调研 7B 速度分 /20</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td><strong>Radeon AI PRO R9700（基准）</strong></td>
+<td style="text-align:right"><strong>152.70</strong></td>
+<td style="text-align:right"><strong>5,907.66</strong></td>
+<td style="text-align:right"><strong>7,008</strong></td>
+<td style="text-align:right"><strong>3,726</strong></td>
+<td style="text-align:right"><strong>100%</strong></td>
+<td style="text-align:right">11</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon RX 9070 XT</td>
+<td style="text-align:right">142.00（↓7.0%）</td>
+<td style="text-align:right">5,603.63（↓5.1%）</td>
+<td style="text-align:right">7,273（↑3.8%）</td>
+<td style="text-align:right">3,722（↓0.1%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">11</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon RX 7900 XTX</td>
+<td style="text-align:right">190.92（↑25.0%）</td>
+<td style="text-align:right">3,889.54（↓34.2%）</td>
+<td style="text-align:right">6,866（↓2.0%）</td>
+<td style="text-align:right">4,941（↑32.6%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">12</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon PRO W7900</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">约 68.0%（↓32.0%）</td>
+<td style="text-align:right">待测</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5070 Ti</td>
+<td style="text-align:right">176.18（↑15.4%）</td>
+<td style="text-align:right">7,567.94（↑28.1%）</td>
+<td style="text-align:right">6,967（↓0.6%）</td>
+<td style="text-align:right">7,882（↑111.5%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">14</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5080</td>
+<td style="text-align:right">192.17（↑25.8%）</td>
+<td style="text-align:right">8,054.59（↑36.3%）</td>
+<td style="text-align:right">8,938（↑27.5%）</td>
+<td style="text-align:right">9,035（↑142.5%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">15</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 4090</td>
+<td style="text-align:right">190.10（↑24.5%）</td>
+<td style="text-align:right">10,830.41（↑83.3%）</td>
+<td style="text-align:right">9,225（↑31.6%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">16</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5090</td>
+<td style="text-align:right">273.68（↑79.2%）</td>
+<td style="text-align:right">11,796.38（↑99.7%）</td>
+<td style="text-align:right">14,636（↑108.8%）</td>
+<td style="text-align:right">15,872（↑326.0%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">20</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4500 Blackwell</td>
+<td style="text-align:right">168.90（CUDA）</td>
+<td style="text-align:right">7,251.66（CUDA）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">13</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4000 Blackwell</td>
+<td style="text-align:right">136.38（CUDA）</td>
+<td style="text-align:right">5,674.44（CUDA）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">10</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 4090 D</td>
+<td style="text-align:right">191.57（CUDA）</td>
+<td style="text-align:right">12,506.97（CUDA）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">17</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://github.com/ggml-org/llama.cpp/discussions/10879">llama.cpp Vulkan 跑分</a> · <a href="https://github.com/ggml-org/llama.cpp/discussions/15013">llama.cpp CUDA 跑分</a> · <a href="https://benchmarks.ul.com/hardware/gpu/AMD%20Radeon%20AI%20PRO%20R9700%2Breview">UL 图形结果</a> · <a href="https://www.pugetsystems.com/labs/articles/amd-gpu-rendering-performance-is-radeon-a-viable-alternative/">Puget 渲染测试</a> · <a href="https://www.phoronix.com/review/amd-radeon-ai-pro-r9700/4">Phoronix vLLM 综合成绩</a></p>
+<h3 id="section-7">（三）训练与微调实测</h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU</strong></th>
+<th><strong>公开任务</strong></th>
+<th><strong>训练结果</strong></th>
+<th><strong>峰值显存</strong></th>
+<th style="text-align:right"><strong>本调研微调部署分 /15</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD R9700</td>
+<td>Qwen3.5-4B 固定 token LoRA，ROCm</td>
+<td><strong>5.31 核心秒／5 步</strong>，120.58 目标 token/核心秒</td>
+<td>17.28 GB 已分配</td>
+<td style="text-align:right"><strong>13</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090</td>
+<td>同任务，CUDA</td>
+<td><strong>10.88 核心秒／5 步</strong>，58.81 目标 token/核心秒</td>
+<td>17.14 GB 已分配</td>
+<td style="text-align:right"><strong>13</strong></td>
+</tr>
+<tr>
+<td>AMD R9700</td>
+<td>Qwen2.5-Coder-32B 4-bit QLoRA，LLaMA-Factory、ROCm 6.3</td>
+<td>用户报告约 <strong>142 训练 token/s</strong>，三轮</td>
+<td>约 28 GB</td>
+<td style="text-align:right"><strong>13</strong></td>
+</tr>
+<tr>
+<td>NVIDIA RTX 4090</td>
+<td>FLUX.1-dev NF4 QLoRA，BF16 混合计算，Diffusers</td>
+<td><strong>约 41 分钟／700 步</strong>，512 × 768</td>
+<td>约 9 GB</td>
+<td style="text-align:right"><strong>13</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>4B 样本固定模型版本、token、LoRA 配置和优化器，在不同主机各测五步。两卡均通过。R9700 的前向和参考计算阶段用时较短，RTX 4090 的反向和优化器阶段更快。表中指标为核心阶段计时，完整训练需另外测端到端耗时与收敛。另两行分别说明不同微调配置的可行性。AMD ROCm 10.1 记录修复了 R9700 等卡在部分 PyTorch 微调任务中的重置问题。 <a href="https://github.com/pankajkgarg/radeon-rl-lab/blob/main/results/matched/README.md">4B 原始配对</a> · <a href="https://github.com/hiyouga/LlamaFactory/issues/10511">32B 训练记录</a> · <a href="https://huggingface.co/blog/flux-qlora">RTX 4090 FLUX 训练</a> · <a href="https://rocm.docs.amd.com/en/docs-10.1.0/about/release-notes.html">ROCm 修复记录</a></p>
+<h2 id="section-8">五、精度与测试批注</h2>
+<ul>
+<li><strong>权重与计算精度</strong>。BF16 和 FP16 都是 16 位浮点，但数值范围不同。Q4_K_M 和 UD-Q4_K_XL 是不同的 GGUF 权重量化配方。算子的乘法、累加及 KV 缓存可以各用不同精度，Q4 推理结果无法换算成 BF16 吞吐，也无法由硬件 INT4 或 FP4 峰值直接推得。 <a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/quantize/README.md">llama.cpp 量化说明</a></li>
+<li><strong>矩阵规格</strong>。R9700 的 191 TFLOPS 是稠密 FP16 矩阵峰值，383 TFLOPS 为结构化稀疏口径。AMD 文档确认 gfx1201 支持 BF16 输入、FP32 累加的矩阵指令，R9700 产品页未单列 BF16 峰值。英伟达 BF16 数字取白皮书各卡稠密值。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">R9700 规格</a> · <a href="https://rocm.docs.amd.com/en/latest/reference/gpu-specs.html">AMD GPU 架构规格</a> · <a href="https://rocm.docs.amd.com/projects/FlyDSL/en/latest/kernel_authoring_guide.html">AMD 矩阵指令</a> · <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf">GeForce Blackwell 白皮书</a> · <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf">GeForce Ada 白皮书</a> · <a href="https://www.nvidia.com/content/dam/en-zz/Solutions/products/workstations/professional-desktop-gpus/rtx-pro-4000/workstation-datasheet-rtx-pro-4000-nvidia-us-web.pdf">RTX PRO 4000 规格</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/50-series/rtx-5090-d-v2/">4090 D 和 5090 D v2 规格</a></li>
+<li><strong>35B 跑分口径</strong>。3.5 和 3.6 分别指 Qwen3.5-35B-A3B 和 Qwen3.6-35B-A3B。tg128／tg64 是测 128／64 个输出 token。预填充的 512、8K、32K 是输入 token 数。RTX 5080 的 64K／128K 是服务上下文配置，实际请求长度更短。5070 Ti 的 81.4 来自五并发报告，约 50 为另一份配置披露有限的 WebUI 报告</li>
+<li><strong>35B 对标</strong>。RTX 4090 和 R9700 的独立 tg128 样本分别为 147.73 和 153.4 token/s，量化、后端和版本不同，尚缺同条件配对。R9700 与 RTX 5090 的 3.5 配对使用相同权重及 commit、不同主机与后端。R9700 与 RTX 5080 的 3.6 同机对照为 PCIe 4.0 ×4／×16，速度取改动前的基线</li>
+<li><strong>其他跑分口径</strong>。7B 采用 llama.cpp、Q4_0、Flash Attention 开启、pp512／tg128。默认 Vulkan，标注行采用 CUDA，主机和构建版本各异。Steel Nomad 为 DX12 公开提交中位数。Blender 使用各平台的 GPU 渲染后端</li>
+<li><strong>价格口径。</strong> 表中区分零售样本、历史挂牌和涡轮批发均价。美国基准取当地在售板卡样本。盈通 WA 京东标价为 17,999 元，加其余硬件暂估 4,000–7,000 元，自建单台预算约 2.2–2.5 万元。 <a href="https://item.jd.com/100218862993.html">盈通京东商品</a></li>
+<li><strong>板卡与验收。</strong> 盈通 WA 为双槽涡轮，约 280 × 125 × 40 mm。样机待验证 FP16 GEMM、显存持续读写、PCIe 双向传输、SSD 冷加载及预装。固定权重文件及其哈希、KV 类型、后端版本和 CPU 卸载设置，以 7–8B 和 27–35B Q4 分别测首 token、生成速度、显存峰值和功耗。若交付要求 BF16，选能放下的固定模型单独跑对应后端。若要对比训练吞吐，统一模型、数据、序列长度、有效批量、精度、LoRA rank 与 step，记录吞吐、显存、loss 和持续稳定性。 <a href="general.html#validation">预装验收</a></li>
+</ul>
+<h2 id="section-9">六、计算、显存与价格总表</h2>
+<p><strong>基准为盈通 R9700 32 GB。</strong> ↑／↓ 为相对基准的增减，＝为持平，— 为缺可比公开数值。BF16 列使用稠密矩阵和 FP32 累加。英伟达 FP16 列按 FP16／FP32 累加排列，AMD 产品规格未列 FP16 峰值的累加精度。RTX 4090 D 的 FP32 取英伟达公布的 74 TFLOPS。RTX 5090 D v2 按官方 21,760 个 CUDA 核心、2.41 GHz 和每周期每核心 2 次浮点运算估算 FP32 峰值。 <a href="https://www.nvidia.cn/geforce/graphics-cards/40-series/rtx-4090-d/">RTX 4090 D 规格</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/50-series/rtx-5090-d-v2/">RTX 5090 D v2 规格</a> · <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf">RTX Blackwell 白皮书</a></p>
+<p>价格以 2026年11月16–19日渠道快照为主。中国大陆相对盈通 WA 京东当时优惠价 <strong>¥17,899.01</strong>，美国相对当地 R9700 板卡样本低点 <strong>$1,999.99</strong>。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<thead>
+<tr>
+<th><strong>GPU 设计厂商</strong></th>
+<th><strong>型号</strong></th>
+<th style="text-align:right"><strong>FP32 TFLOPS</strong></th>
+<th><strong>稠密 FP16 矩阵 TFLOPS</strong></th>
+<th style="text-align:right"><strong>BF16 矩阵 TFLOPS</strong></th>
+<th style="text-align:right"><strong>显存 GB</strong></th>
+<th style="text-align:right"><strong>显存带宽 GB/s</strong></th>
+<th style="text-align:right"><strong>参考功耗 W</strong></th>
+<th><strong>中国大陆 元</strong></th>
+<th><strong>美国 USD</strong></th>
+<th style="text-align:right"><strong>本调研硬件分 /25</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AMD</td>
+<td><strong>Radeon AI PRO R9700（基准）</strong></td>
+<td style="text-align:right"><strong>47.8</strong></td>
+<td><strong>191</strong></td>
+<td style="text-align:right">支持，峰值未列</td>
+<td style="text-align:right"><strong>32</strong></td>
+<td style="text-align:right"><strong>640</strong></td>
+<td style="text-align:right"><strong>300</strong></td>
+<td><strong>17,899.01</strong></td>
+<td><strong>1,999.99–2,379.99</strong></td>
+<td style="text-align:right">14</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon AI PRO R9600D</td>
+<td style="text-align:right">24.8（↓48.1%）</td>
+<td>99（↓48.2%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">32（＝）</td>
+<td style="text-align:right">640（＝）</td>
+<td style="text-align:right">150（↓50.0%）</td>
+<td>—</td>
+<td>—</td>
+<td style="text-align:right">13</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon RX 9070 XT</td>
+<td style="text-align:right">48.7（↑1.9%）</td>
+<td>195（↑2.1%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">16（↓50.0%）</td>
+<td style="text-align:right">640（＝）</td>
+<td style="text-align:right">304（↑1.3%）</td>
+<td>5,299–6,199（↓70.4% 至 ↓65.4%）</td>
+<td>959.99（↓52.0%）</td>
+<td style="text-align:right">13</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon RX 7900 XTX</td>
+<td style="text-align:right">61.4（↑28.5%）</td>
+<td>123（↓35.6%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">24（↓25.0%）</td>
+<td style="text-align:right">960（↑50.0%）</td>
+<td style="text-align:right">355（↑18.3%）</td>
+<td>7,899（↓55.9%）</td>
+<td>跟踪缺货</td>
+<td style="text-align:right">17</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon PRO W7900</td>
+<td style="text-align:right">61.3（↑28.2%）</td>
+<td>123（↓35.6%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">48（↑50.0%）</td>
+<td style="text-align:right">864（↑35.0%）</td>
+<td style="text-align:right">295（↓1.7%）</td>
+<td>33,264（2024 历史）</td>
+<td>—</td>
+<td style="text-align:right">17</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Radeon PRO W7800 48 GB</td>
+<td style="text-align:right">45.2（↓5.4%）</td>
+<td>90.4（↓52.7%）</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">48（↑50.0%）</td>
+<td style="text-align:right">864（↑35.0%）</td>
+<td style="text-align:right">260（↓13.3%）</td>
+<td>—</td>
+<td>—</td>
+<td style="text-align:right">16</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5070 Ti</td>
+<td style="text-align:right">43.9（↓8.2%）</td>
+<td>175.8／87.9</td>
+<td style="text-align:right">87.9</td>
+<td style="text-align:right">16（↓50.0%）</td>
+<td style="text-align:right">896（↑40.0%）</td>
+<td style="text-align:right">300（＝）</td>
+<td>7,549–10,399（↓57.8% 至 ↓41.9%）</td>
+<td>1,400–1,499（↓30.0% 至 ↓25.0%）</td>
+<td style="text-align:right">16</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5080</td>
+<td style="text-align:right">56.3（↑17.8%）</td>
+<td>225.1／112.6</td>
+<td style="text-align:right">112.6</td>
+<td style="text-align:right">16（↓50.0%）</td>
+<td style="text-align:right">960（↑50.0%）</td>
+<td style="text-align:right">360（↑20.0%）</td>
+<td>8,999–15,399（↓49.7% 至 ↓14.0%）</td>
+<td>2,235–2,670.02（↑11.8% 至 ↑33.5%）</td>
+<td style="text-align:right">17</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 4090</td>
+<td style="text-align:right">82.6（↑72.8%）</td>
+<td>330.3／165.2</td>
+<td style="text-align:right">165.2</td>
+<td style="text-align:right">24（↓25.0%）</td>
+<td style="text-align:right">1,008（↑57.5%）</td>
+<td style="text-align:right">450（↑50.0%）</td>
+<td>23,920（↑33.6%） 涡轮均价</td>
+<td>4,999（↑150.0%）</td>
+<td style="text-align:right">19</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5090</td>
+<td style="text-align:right">104.8（↑119.2%）</td>
+<td>419／209.5</td>
+<td style="text-align:right">209.5</td>
+<td style="text-align:right">32（＝）</td>
+<td style="text-align:right">1,792（↑180.0%）</td>
+<td style="text-align:right">575（↑91.7%）</td>
+<td>43,785（↑144.6%） 涡轮均价</td>
+<td>6,549–7,799.99（↑227.5% 至 ↑290.0%）</td>
+<td style="text-align:right">21</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4000 Blackwell</td>
+<td style="text-align:right">37（↓22.6%）</td>
+<td>—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">24（↓25.0%）</td>
+<td style="text-align:right">672（↑5.0%）</td>
+<td style="text-align:right">145（↓51.7%）</td>
+<td>15,000（↓16.2%） 挂牌</td>
+<td>—</td>
+<td style="text-align:right">14</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX PRO 4500 Blackwell</td>
+<td style="text-align:right">51（↑6.7%）</td>
+<td>—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">32（＝）</td>
+<td style="text-align:right">896（↑40.0%）</td>
+<td style="text-align:right">200（↓33.3%）</td>
+<td>39,999（↑123.5%） 较早挂牌</td>
+<td>4,799.99–5,199（↑140.0% 至 ↑160.0%）</td>
+<td style="text-align:right">18</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>RTX 5000 Ada</td>
+<td style="text-align:right">65.3（↑36.6%）</td>
+<td>—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">32（＝）</td>
+<td style="text-align:right">576（↓10.0%）</td>
+<td style="text-align:right">250（↓16.7%）</td>
+<td>待询</td>
+<td>—</td>
+<td style="text-align:right">15</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 4090 D</td>
+<td style="text-align:right">74（↑54.8%）</td>
+<td>—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">24（↓25.0%）</td>
+<td style="text-align:right">1,008（↑57.5%）</td>
+<td style="text-align:right">425（↑41.7%）</td>
+<td>20,554（↑14.8%） 涡轮均价</td>
+<td>—</td>
+<td style="text-align:right">18</td>
+</tr>
+<tr>
+<td>英伟达（NVIDIA）</td>
+<td>GeForce RTX 5090 D v2</td>
+<td style="text-align:right">104.9（↑119.5%，估算）</td>
+<td>—</td>
+<td style="text-align:right">—</td>
+<td style="text-align:right">24（↓25.0%）</td>
+<td style="text-align:right">1,344（↑110.0%）</td>
+<td style="text-align:right">575（↑91.7%）</td>
+<td>19,999（↑11.7%）</td>
+<td>—</td>
+<td style="text-align:right">21</td>
+</tr>
+</tbody>
+</table></div>
+<p><a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">AMD R9700</a> · <a href="https://www.nvidia.com/en-gb/geforce/graphics-cards/compare/">英伟达 GeForce 规格</a> · <a href="https://www.nvidia.com/en-in/products/workstations/professional-desktop-gpus/">英伟达工作站规格</a> · <a href="https://compare.fenxianglife.com/report/xianka-jiage.html">大陆零售跟踪</a> · <a href="https://detail.zol.com.cn/vga/nvidia/10000/guangyuan/good_pic.html">RTX PRO 4000 大陆价格线索</a> · <a href="https://item.jd.com/product/gU_U_KYwm-9ahLnw2rwdXA.html">RTX PRO 4500 工包挂牌入口</a> · <a href="https://www.hiruibo.com/market/gpu.html">批发公开索引</a> · <a href="https://www.tomshardware.com/pc-components/gpus/lowest-gpu-prices-tracking">美国消费卡价格</a> · <a href="https://planmypc.com/gpu-prices">Amazon 跟踪</a> · <a href="https://www.newegg.com/p/pl?N=100006662&amp;d=Radeon+AI+Pro+R9700+32GB">美国 R9700 板卡样本</a> · <a href="https://www.bhphotovideo.com/c/compare/PNY_RTX%2BPRO%2B4500_vs_NVIDIA_4500%2BBlackwell/BHitems/1898512-REG_1938760-REG">B&amp;H RTX PRO 4500</a></p>
+</article></div></main>
+</body>
+</html>
