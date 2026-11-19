@@ -72,7 +72,8 @@ h1, h2, h3 { line-height: 1.25; }
 .focus-table .metric-group th { font-size: 11px; font-weight: 720; padding-block: 7px; background: #e5edf8; }
 .focus-table thead th[scope="colgroup"] { border-left: 1px solid #cbd8eb; }
 .focus-table .decode-cell { color: var(--deep-blue); font-weight: 750; }
-.focus-table .decode-unconfirmed { color: var(--muted); }
+.focus-table .decode-estimate { color: #80511e; font-weight: 700; }
+.focus-table .decode-estimate a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .focus-table tbody th { background: #fff; }
 .focus-table tbody tr:nth-child(even) th { background: #f7f9fc; }
 .focus-table tbody .focus-row > * { background: #fff5ce; }

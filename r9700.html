@@ -18,14 +18,14 @@
 <main class="wrap report" id="content"><header class="report-title"><a class="back" href="index.html">← 概览与型号</a><h1>盈通 Radeon AI PRO R9700 对标调研</h1></header><div class="report-layout"><aside><nav aria-label="章节"><strong>章节</strong><a class="level-1" href="#section-1">一、总览</a><a class="level-1" href="#section-2">二、使用场景与目标客群</a><a class="level-1" href="#section-3">三、本调研综合评分</a><a class="level-1" href="#section-4">四、公开实测与跑分</a><a class="level-2" href="#section-5">（一）Qwen 35B 量化推理</a><a class="level-2" href="#section-6">（二）7B 推理、图形与渲染</a><a class="level-2" href="#section-7">（三）训练与微调实测</a><a class="level-1" href="#section-8">五、精度与测试批注</a><a class="level-1" href="#section-9">六、计算、显存与价格总表</a><a class="level-1" href="#section-10">七、R9700 与 7900 XTX AI ULTRA 及三款 5090</a></nav></aside><article class="prose"><h2 id="section-1">一、总览</h2>
 <p><strong>在同一项 3DMark 图形测试中，R9700 得了 7,008 分，RTX 5070 Ti 得了 6,967 分，两张卡相差不到 1%。32 GB 的价值是让 35B Q4 权重全进显存，同时给长文档的上下文缓存和运行留空间。</strong> 一份 35B Q4 权重约 19.7 GiB，16 GB 卡通常要卸载到系统内存，或换更低位宽的量化。24 GB 卡已有全显存样本，R9700 再多 8 GB 名义容量，可留给上下文或并发。 <a href="https://benchmarks.ul.com/hardware/gpu/AMD%20Radeon%20AI%20PRO%20R9700%2Breview">UL 图形横评</a> · <a href="https://touch-sp.hatenablog.com/entry/2026/02/27/004916">35B Q4 权重及实测</a> · <a href="https://huggingface.co/docs/transformers/main/kv_cache">KV 缓存说明</a></p>
 <p><strong>AMD 工作站样机先看 R9700 32 GB。</strong> RX 7900 XTX AI ULTRA 48 GB 适合有更大显存需求的配置，RTX 5090 32 GB 是长文档推理速度参照。48 GB 板卡、三款 5090 与最新价格样本见 <a href="rx7900.html">RX 7900 XTX AI ULTRA 48 GB 专项调研</a>。</p>
-<section id="comparison"><div class="table-scroll focus-scroll" tabindex="0" role="region" aria-label="Radeon AI PRO R9700 对照表"><table class="focus-table"><thead><tr class="metric-group"><th class="model-column" scope="col" rowspan="2">型号</th><th scope="colgroup" colspan="2">推理速度</th><th scope="colgroup" colspan="4">板卡规格</th><th scope="colgroup" colspan="2">价格与评分</th></tr><tr><th scope="col">35B Q4 生成<small>token/s</small></th><th scope="col">7B Q4 生成<small>token/s</small></th><th scope="col">显存<small>GB</small></th><th scope="col">显存带宽<small>GB/s</small></th><th scope="col">FP32<small>TFLOPS</small></th><th scope="col">功耗<small>W</small></th><th scope="col">大陆样本<small>元</small></th><th scope="col">规格分<small>/10</small></th></tr></thead><tbody><tr class="focus-row"><th scope="row"><span>Radeon AI PRO R9700</span><small>AMD</small></th><td class="decode-cell">127.4<small>配对样本</small></td><td>152.70</td><td>32</td><td>640</td><td>47.8</td><td>300</td><td>17,899<small>此前优惠</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5070 Ti</span><small>NVIDIA</small></th><td class="decode-cell">153<small>3.6 Agent，推测解码</small></td><td>176.18</td><td>16</td><td>896</td><td>43.9</td><td>300</td><td>7,102–9,240<small>渠道</small></td><td>6</td></tr><tr><th scope="row"><span>RTX 5090 原版</span><small>NVIDIA</small></th><td class="decode-cell">194.0<small>配对样本</small></td><td>273.68</td><td>32</td><td>1,792</td><td>104.8</td><td>575</td><td>51,000<small>双宽涡轮</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5090 D 首版</span><small>NVIDIA</small></th><td class="decode-unconfirmed">待核<small>自报约 197</small></td><td>—</td><td>32</td><td>1,792</td><td>约 105<small>估</small></td><td>575</td><td>47,199–49,499<small>京东卡片</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5090 D v2</span><small>NVIDIA</small></th><td class="decode-unconfirmed">待同条件测试</td><td>—</td><td>24</td><td>1,344</td><td>约 105<small>估</small></td><td>575</td><td>41,699–48,599<small>京东卡片</small></td><td>6</td></tr><tr><th scope="row"><span>RX 7900 XTX AI ULTRA 48 GB</span><small>AMD · 供方规格</small></th><td class="decode-unconfirmed">待测</td><td>—</td><td>48</td><td>864</td><td>61</td><td>约 295</td><td>待书面报价</td><td>9</td></tr><tr><th scope="row"><span>RX 7900 XTX 标准版 24 GB</span><small>AMD</small></th><td class="decode-cell">104.79<small>独立样本</small></td><td>190.92</td><td>24</td><td>960</td><td>61.4</td><td>355</td><td>7,899<small>此前跟踪</small></td><td>6</td></tr></tbody></table></div><div class="comparison-insights"><p>5090 原版的 35B Q4 生成是 R9700 的 1.52 倍，32K 预填充是 3.44 倍。</p><p>与 5070 Ti 的 Steel Nomad 得分接近，Blender 样本为 3,726 对 7,882。</p></div><p class="comparison-note">7B 为 Vulkan 公开样本。35B 配对使用同一权重，独立样本的模型、引擎或量化有差异，色浅的待核和待测项缺少可比较的实测。规格分按显存、带宽与功耗计算，价格为 11 月 20 日汇总。 <a href="rx7900.html#decode-evidence">看 35B 的测试条件与出处</a>。</p></section><details class="extended-table"><summary>查看扩展对照表</summary><div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
+<section id="comparison"><div class="table-scroll focus-scroll" tabindex="0" role="region" aria-label="Radeon AI PRO R9700 对照表"><table class="focus-table"><thead><tr class="metric-group"><th class="model-column" scope="col" rowspan="2">型号</th><th scope="colgroup" colspan="2">推理速度</th><th scope="colgroup" colspan="4">板卡规格</th><th scope="colgroup" colspan="2">价格与评分</th></tr><tr><th scope="col">35B Q4 生成<small>token/s</small></th><th scope="col">7B 生成<small>token/s</small></th><th scope="col">显存<small>GB</small></th><th scope="col">显存带宽<small>GB/s</small></th><th scope="col">FP32<small>TFLOPS</small></th><th scope="col">功耗<small>W</small></th><th scope="col">大陆样本<small>元</small></th><th scope="col">规格分<small>/10</small></th></tr></thead><tbody><tr class="focus-row"><th scope="row"><span>Radeon AI PRO R9700</span><small>AMD</small></th><td class="decode-cell">127.4<small>配对实测</small></td><td class="decode-cell">152.7<small>Vulkan 实测</small></td><td>32</td><td>640</td><td>47.8</td><td>300</td><td>17,899<small>此前优惠</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5070 Ti</span><small>NVIDIA</small></th><td class="decode-cell">153<small>推测解码实测</small></td><td class="decode-cell">176.2<small>Vulkan 实测</small></td><td>16</td><td>896</td><td>43.9</td><td>300</td><td>7,102–9,240<small>渠道</small></td><td>6</td></tr><tr><th scope="row"><span>RTX 5090 原版</span><small>NVIDIA</small></th><td class="decode-cell">194.0<small>配对实测</small></td><td class="decode-cell">245.5<small>MLPerf 实测</small></td><td>32</td><td>1,792</td><td>104.8</td><td>575</td><td>51,000<small>双宽涡轮</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5090 D 首版</span><small>NVIDIA</small></th><td class="decode-estimate">约 195<small><a href="rx7900.html#decode-evidence">估算依据</a></small></td><td class="decode-cell">248.2<small>MLPerf 实测</small></td><td>32</td><td>1,792</td><td>约 105<small>估</small></td><td>575</td><td>47,199–49,499<small>京东卡片</small></td><td>8</td></tr><tr><th scope="row"><span>RTX 5090 D v2</span><small>NVIDIA</small></th><td class="decode-estimate">145–170<small><a href="rx7900.html#decode-evidence">估算依据</a></small></td><td class="decode-cell">214.9<small>MLPerf 实测</small></td><td>24</td><td>1,344</td><td>约 105<small>估</small></td><td>575</td><td>41,699–48,599<small>京东卡片</small></td><td>6</td></tr><tr><th scope="row"><span>RX 7900 XTX AI ULTRA 48 GB</span><small>AMD · 供方规格</small></th><td class="decode-estimate">约 95<small><a href="rx7900.html#decode-evidence">估算依据</a></small></td><td class="decode-estimate">约 170<small><a href="rx7900.html#decode-evidence">估算依据</a></small></td><td>48</td><td>864</td><td>61</td><td>约 295</td><td>待书面报价</td><td>9</td></tr><tr><th scope="row"><span>RX 7900 XTX 标准版 24 GB</span><small>AMD</small></th><td class="decode-cell">104.79<small>独立实测</small></td><td class="decode-cell">190.9<small>Vulkan 实测</small></td><td>24</td><td>960</td><td>61.4</td><td>355</td><td>7,899<small>此前跟踪</small></td><td>6</td></tr></tbody></table></div><div class="comparison-insights"><p>5090 原版的 35B Q4 生成是 R9700 的 1.52 倍，32K 预填充是 3.44 倍。</p><p>与 5070 Ti 的 Steel Nomad 得分接近，Blender 样本为 3,726 对 7,882。</p></div><p class="comparison-note">7B 来自 Llama 2 的 MLPerf 或 Vulkan 样本。35B 的配对实测使用相同权重，其余实测的模型、引擎或量化有差异。标有「估算依据」的数字来自实测与规格外推。规格分按显存、带宽与功耗计算，价格为 11 月 20 日汇总。 <a href="rx7900.html#decode-evidence">查看生成速度的测试条件与出处</a>。</p></section><details class="extended-table"><summary>查看扩展对照表</summary><div class="table-scroll" tabindex="0" role="region" aria-label="调研数据表"><table>
 <thead>
 <tr>
 <th><strong>GPU</strong></th>
 <th><strong>显存 GB · 显存带宽 GB/s · 功耗 W</strong></th>
 <th><strong>FP32／FP8／BF16 TFLOPS</strong></th>
 <th><strong>图形分／4K FPS</strong></th>
-<th style="text-align:right"><strong>7B Q4 生成 token/s</strong></th>
+<th style="text-align:right"><strong>7B 生成 token/s</strong></th>
 <th><strong>35B Q4 生成 token/s · 驻留</strong></th>
 <th><strong>训练与微调</strong></th>
 <th><strong>大陆样本 元</strong></th>
@@ -126,8 +126,8 @@
 <td>32 GDDR7 · 1,792 · 575</td>
 <td>约 105（估）／—／—</td>
 <td>—／—</td>
-<td style="text-align:right">—</td>
-<td>待核（自报约 197）</td>
+<td style="text-align:right">248.2（MLPerf）</td>
+<td>约 195（估算）</td>
 <td>CUDA</td>
 <td>47,199–49,499 挂牌</td>
 <td style="text-align:right"><strong>62–82</strong></td>
@@ -137,8 +137,8 @@
 <td>24 GDDR7 · 1,344 · 575</td>
 <td>约 105（估）／—／—</td>
 <td>—／—</td>
-<td style="text-align:right">—</td>
-<td>待同条件实测</td>
+<td style="text-align:right">214.9（MLPerf）</td>
+<td>145–170（估算）</td>
 <td>CUDA</td>
 <td>41,699–48,599 挂牌</td>
 <td style="text-align:right"><strong>55–75</strong></td>
@@ -156,7 +156,7 @@
 </tr>
 </tbody>
 </table></div>
-</details><p>三款 5090 的价格为 2026 年 11 月 20 日可见的渠道与挂牌样本。首版 5090 D 与原版同为 32 GB、1,792 GB/s，D v2 为 24 GB、1,344 GB/s。两款 D 的 FP32 是按核心数和加速频率估算的理论峰值，同口径推理结果待测。 <a href="https://www.nvidia.cn/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/">首版 D 官方规格</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/50-series/rtx-5090-d-v2/">D v2 官方规格</a> · <a href="https://item.jd.com/product/fH5zY-f2K3h9ufVKcNO3nw.html">京东挂牌样本</a> · <a href="https://www.hiruibo.com/p/rtx5090-32g-fe1702.html">原版 5090 渠道样本</a></p>
+</details><p>三款 5090 的价格为 2026 年 11 月 20 日可见的渠道与挂牌样本。首版 5090 D 与原版同为 32 GB、1,792 GB/s，D v2 为 24 GB、1,344 GB/s。两款 D 的 FP32 是按核心数和加速频率估算的理论峰值。7B 的 MLPerf 样本与本表的 Vulkan 样本使用不同引擎。 <a href="rx7900.html#decode-evidence">7B 实测与 35B 估算依据</a> · <a href="https://www.nvidia.cn/geforce/news/rtx-50-series-graphics-cards-gpu-laptop-announcements/">首版 D 官方规格</a> · <a href="https://www.nvidia.cn/geforce/graphics-cards/50-series/rtx-5090-d-v2/">D v2 官方规格</a> · <a href="https://item.jd.com/product/fH5zY-f2K3h9ufVKcNO3nw.html">京东挂牌样本</a> · <a href="https://www.hiruibo.com/p/rtx5090-32g-fe1702.html">原版 5090 渠道样本</a></p>
 <p><strong>7B 两张卡都放得下，5070 Ti 的公开同协议样本生成快约 15%。</strong> 到 <strong>35B Q4</strong>，4090 和 7900 XTX 是 24 GB 全显存参照，R9600D 是 AMD 同容量低功耗参照，RTX PRO 4500 是 NVIDIA 同容量工作站参照。35B 一列使用各卡实际配置。5090 的 194.0 来自早期配对，当时 R9700 为 127.4。权重配方和后端见第四节。相同模型、量化和输入下，显存容量本身主要影响可运行的模型与上下文。 <a href="https://github.com/ggml-org/llama.cpp/discussions/10879">7B Vulkan 跑分</a> · <a href="https://github.com/ggml-org/llama.cpp/discussions/15013">7B CUDA 跑分</a> · <a href="https://github.com/ggml-org/llama.cpp/discussions/19890">35B 配对记录</a></p>
 <p>如果考虑 R9600D，AMD 参考规格为 150 W、被动散热，整机需提供匹配风道。它的实测吞吐和含票供货价待核。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9600d.html">AMD R9600D 产品规格</a></p>
 <p><strong>表里的显存带宽是 GPU 芯片与板载显存之间的理论读写上限。</strong> R9700 的 640 GB/s 比 5070 Ti 的 896 GB/s 低约 29%，比 5080 的 960 GB/s 低约 33%。<strong>PCIe 是显卡和主机之间的通道。</strong> 权重和 KV 缓存留在显存时，PCIe 对单卡持续生成通常影响较小。加载模型或频繁和系统内存交换数据时，PCIe 才更相关。 <a href="https://www.amd.com/en/products/graphics/workstations/radeon-ai-pro/ai-9000-series/amd-radeon-ai-pro-r9700.html">AMD R9700 规格</a> · <a href="https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf">NVIDIA 显存规格</a> · <a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#data-transfer-between-host-and-device">显卡与主机数据传输</a></p>
@@ -390,7 +390,7 @@
 </tr>
 </tbody>
 </table></div>
-<p>三款 5090 的价格分按总览所列的 11 月 20 日样本计，均在 ¥40,000 以上。两款 D 的 7B 同口径实测待补，各保留 0–20 分的区间。首版 D 的 32 GB 在 35B 驻留和微调部署两项合计比 D v2 的 24 GB 多 7 分。</p>
+<p>三款 5090 的价格分按总览所列的 11 月 20 日样本计，均在 ¥40,000 以上。总览已列出两款 D 的 7B MLPerf 实测，7B 评分按 Vulkan 协议，暂保留各 0–20 分的区间。首版 D 的 32 GB 在 35B 驻留和微调部署两项合计比 D v2 的 24 GB 多 7 分。</p>
 <ul>
 <li><strong>35B 驻留 25 分</strong>。针对本报告约 18–21 GiB 的 Q4 权重样本，按名义显存 ≥32 GB／24 GB／16 GB 给 25／20／8 分。评估权重驻留及运行余量。未跑同模型的型号按容量估计，交付需验实际 KV、上下文和并发</li>
 <li><strong>7B 速度 20 分</strong>。Llama 2 7B Q4_0、FA 开、tg128 最高 12 分、pp512 最高 8 分，各按实测达到 250 和 12,000 token/s 的比例计分，封顶后相加取整。优先取 Vulkan，明确标注的型号用同测试阶段 CUDA 样本。此分反映对应运行路径的观测速度</li>
@@ -967,7 +967,7 @@
 <td style="text-align:right">864</td>
 <td style="text-align:right">61</td>
 <td style="text-align:right">约 295</td>
-<td>待样卡实测</td>
+<td>约 95（估算）</td>
 <td>待书面报价</td>
 </tr>
 <tr>
@@ -1003,7 +1003,7 @@
 <td style="text-align:right">1,792</td>
 <td style="text-align:right">约 105（估）</td>
 <td style="text-align:right">575</td>
-<td>待核（自报约 197）</td>
+<td>约 195（估算）</td>
 <td>¥47,199–49,499（挂牌）</td>
 </tr>
 <tr>
@@ -1012,7 +1012,7 @@
 <td style="text-align:right">1,344</td>
 <td style="text-align:right">约 105（估）</td>
 <td style="text-align:right">575</td>
-<td>待同条件测试</td>
+<td>145–170（估算）</td>
 <td>¥41,699–48,599（挂牌）</td>
 </tr>
 </tbody>
@@ -1023,7 +1023,7 @@
 <li><strong>48 GB 面向超出 32 GB 的工作流。</strong> 优先验证 70B Q4、更大的生图工作流或多个模型同时驻留。按供方规格书，AI ULTRA 是 48 GB／864 GB/s，带宽为 GPU 访问板载显存的峰值。它的 PCIe 4.0 ×16 影响的是主机与显卡之间搬运数据。样卡需实际分配超过 32 GB 并完成业务任务。 <span class="local-ref" title="工作区资料">AI ULTRA 规格书</span></li>
 <li><strong>价格按渠道与完整型号复核。</strong> 表中两款 D 的价格为 2026 年 11 月 20 日检索时可见的京东商品卡片，原版 5090 为渠道双宽涡轮样本。第六节保留此前样本。供货、含税交付和可用保修以书面报价为准。 <a href="https://item.jd.com/product/fH5zY-f2K3h9ufVKcNO3nw.html">京东 SKU 样本</a> · <a href="https://www.hiruibo.com/p/rtx5090-32g-fe1702.html">原版 5090 渠道样本</a></li>
 </ul>
-<p>首版 5090 D 的约 197 token/s 来自作者自报，实际 GGUF 和原始日志未公开。D v2 的约 208 token/s 为网站估算。两条记录和已核实的其他实机样本见 <a href="rx7900.html#decode-evidence">35B 生成速度测试记录</a>。</p>
+<p>两款 D 在两份 MLPerf 评测中的 Llama 2 7B 综合生成实测为 <strong>248.24</strong> 与 <strong>214.9 token/s</strong>。首版 D 的 35B 估点来自同带宽的原版 5090，约 <strong>195</strong>。D v2 则按带宽和 7B 实测相对差距外推为 <strong>145–170</strong>。外部网站对 Qwen3.6 35B 的估算为 <strong>162.6</strong> 与 <strong>208</strong>。 <a href="rx7900.html#decode-evidence">7B 实测图表与 35B 估算依据</a></p>
 <p>48 GB 板卡、三款 5090 的规格来源与估算口径，以及生图、供货和样机验收，见 <a href="rx7900.html">RX 7900 XTX AI ULTRA 48 GB 专项调研</a>。</p>
 </article></div></main>
 </body>
