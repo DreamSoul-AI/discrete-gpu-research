@@ -86,7 +86,13 @@ function cardRow(record) {
 
   const name = element("th", undefined, "model");
   name.scope = "row";
-  name.append(element("strong", model));
+  const modelLabel = element("strong", model);
+  if (shape === "供方板卡" && model.startsWith("RX 7900 XTX AI ULTRA")) {
+    const link = element("a", model);
+    link.href = "rx7900.html#comparison";
+    modelLabel.replaceChildren(link);
+  }
+  name.append(modelLabel);
   name.append(element("small", brand + " · " + shape));
   if (model === "AI PRO R9700") row.className = "reference-row";
   row.append(selector, name);
