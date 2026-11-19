@@ -171,15 +171,19 @@ byId("next").addEventListener("click", () => {
 byId("compare").addEventListener("click", compare);
 render();
 
-const viewButtons = document.querySelectorAll("[data-view]");
-const comparisonViews = document.querySelectorAll("[data-comparison-view]");
-for (const button of viewButtons) {
-  button.addEventListener("click", () => {
-    for (const view of comparisonViews) {
-      view.hidden = view.dataset.comparisonView !== button.dataset.view;
-    }
-    for (const option of viewButtons) {
-      option.setAttribute("aria-pressed", String(option === button));
-    }
-  });
+const specialButtons = document.querySelectorAll("[data-special]");
+const specialPanels = document.querySelectorAll("[data-special-panel]");
+function showSpecial(selected) {
+  for (const panel of specialPanels) {
+    panel.hidden = panel.dataset.specialPanel !== selected;
+  }
+  for (const button of specialButtons) {
+    button.setAttribute("aria-pressed", String(button.dataset.special === selected));
+  }
 }
+
+for (const button of specialButtons) {
+  button.addEventListener("click", () => showSpecial(button.dataset.special));
+}
+showSpecial("r9700");
+document.querySelector(".view-buttons").hidden = false;
